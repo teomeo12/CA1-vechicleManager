@@ -1,6 +1,6 @@
 package org.example;
 
-/**
+/** Teodor Donchev SD2a
  * This Vehicle Bookings Management Systems manages the booking of Vehicles
  * by Passengers.
  *
@@ -33,5 +33,6 @@ public class App
         vehicleManager.displayAllVehicles();
 
         System.out.println("Program exiting... Goodbye");
+        System.out.println("remove me");
     }
 }
