@@ -26,7 +26,15 @@ public class App
         // create PassengerStore and load it with passenger records from text file
         PassengerStore passengerStore = new PassengerStore("passengers.txt");
         System.out.println("List of all passengers:");
+
+        passengerStore.addPassenger("Iggy Pop","iggy@gmail.com","0838691644",34.3623,-23.2345);
+
         passengerStore.displayAllPassengers();
+       // Passenger passenger1 = new Passenger();
+
+
+       // passengerStore.addPassenger("Iggy Pop","iggy@gmail.com","0838691644",34.3623,-23.2345);
+
 
         VehicleManager vehicleManager = new VehicleManager("vehicles.txt");
         System.out.println("List of all Vehicles:");

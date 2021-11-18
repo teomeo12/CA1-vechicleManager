@@ -56,5 +56,21 @@ public class PassengerStore {
     }
 
     // TODO - see functional spec for details of code to add
+    public void addPassenger(String name, String email, String phone, double latitude, double longitude) {
+        Passenger passenger1 = new Passenger(name, email, phone, latitude, longitude);
+        boolean found = false;
+        for (Passenger p : passengerList) {
+
+            if (p.equals(passenger1)) {
+                found = true;
+                break; //its stops the for loop here
+            }
+        }
+        if (found == false) {
+            passengerList.add(passenger1);
+        }
+
+
+    }
 
 } // end class
