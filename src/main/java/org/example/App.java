@@ -27,20 +27,17 @@ public class App
         PassengerStore passengerStore = new PassengerStore("passengers.txt");
         System.out.println("List of all passengers:");
 
+        //creating new passangers
         passengerStore.addPassenger("Iggy Pop","iggy@gmail.com","0838691644",34.3623,-23.2345);
-
         passengerStore.displayAllPassengers();
-       // Passenger passenger1 = new Passenger();
 
-
-       // passengerStore.addPassenger("Iggy Pop","iggy@gmail.com","0838691644",34.3623,-23.2345);
-
-
+        //vehicle manager file reading
         VehicleManager vehicleManager = new VehicleManager("vehicles.txt");
         System.out.println("List of all Vehicles:");
         vehicleManager.displayAllVehicles();
 
-        System.out.println("\n****************Vechicle with regNumber 151D987105************ ");
+        //find vehicle by registration number
+       System.out.println("\n****************Vechicle with regNumber 151D987105************ ");
        String reg="151D987105";
        Vehicle v = vehicleManager.findvehicleByRegNumber(reg);
         //vehicleManager.findvehicleByRegNumber(reg);
@@ -50,6 +47,15 @@ public class App
         }else{
             System.out.println("Vehicle not found");
         }
+
+        //creating new booking
+       BookingManager bookingManager = new BookingManager("bookings.txt");
+
+        //create new cars
+
+
+        Vehicle car = new Car("Car","Hyundai","I40",4,"161MN3238107",6.00,2016,05,24,156000,54.2543,-16.4444,5);
+
 
         System.out.println("Program exiting... Goodbye");
     }

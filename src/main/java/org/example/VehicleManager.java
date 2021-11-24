@@ -39,16 +39,26 @@ public class VehicleManager {
                 int mileage = sc.nextInt();
                 double latitude = sc.nextDouble();  // Depot GPS location
                 double longitude = sc.nextDouble();
-                int loadSpace = sc.nextInt();
+
+
 
                 if (type.equalsIgnoreCase("Van") ||
-                        type.equalsIgnoreCase("Truck")) {
+                        type.equalsIgnoreCase("Truck") ) {
+                    int loadSpace = sc.nextInt();
                     // construct a Van object and add it to the passenger list
                     vehicleList.add(new Van(id, type, make, model, milesPerKwH,
                             registration, costPerMile,
                             year, month, day,
                             mileage, latitude, longitude,
                             loadSpace));
+
+                }
+                if(type.equalsIgnoreCase("Car") || type.equalsIgnoreCase("4x4")){
+                    int numSeats = sc.nextInt();
+                    vehicleList.add(new Car( type, make, model, milesPerKwH,
+                            registration, costPerMile,
+                            year, month, day,
+                            mileage, latitude, longitude, numSeats));
                 }
             }
             sc.close();

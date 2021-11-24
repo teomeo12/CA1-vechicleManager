@@ -9,10 +9,12 @@ public class BookingManager
     private VehicleManager vehicleManager;
 
     // Constructor
-    public BookingManager() {
+    public BookingManager(String fileName) {
         this.bookingList = new ArrayList<>();
     }
 
     //TODO implement functionality as per specification
+    //add booking
+    //find booking
 
 }

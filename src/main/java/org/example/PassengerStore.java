@@ -70,7 +70,6 @@ public class PassengerStore {
             passengerList.add(passenger1);
         }
 
-
     }
 
 } // end class
