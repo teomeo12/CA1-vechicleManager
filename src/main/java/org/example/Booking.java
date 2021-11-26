@@ -17,10 +17,22 @@ class Booking
 
     //TODO - see specification
 
-    //constructor
+    //constructor NO id passed so the constructor will autogenerate the ID
+    public Booking(int passengerId, int vehicleId, LocalDateTime bookingDateTime,
+                   LocationGPS startLocation, LocationGPS endLocation, double cost)
+    {
+        this.bookingId = idGenerator.getNextId(); // auto generated id (new for each run of the system)
+        this.passengerId = passengerId;
+        this.vehicleId = vehicleId;
+        this.bookingDateTime = bookingDateTime;
+        this.startLocation = startLocation;
+        this.endLocation = endLocation;
+        this.cost = cost;
+    }
+    //constructor, when the ID is available from reading the file
     public Booking(int bookingId, int passengerId, int vehicleId, LocalDateTime bookingDateTime,
-                   LocationGPS startLocation, LocationGPS endLocation, double cost) {
-
+                   LocationGPS startLocation, LocationGPS endLocation, double cost)
+    {
         this.bookingId = bookingId;
         this.passengerId = passengerId;
         this.vehicleId = vehicleId;
@@ -86,18 +98,6 @@ class Booking
         this.cost = cost;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Booking booking = (Booking) o;
-        return bookingId == booking.bookingId && passengerId == booking.passengerId && vehicleId == booking.vehicleId && Double.compare(booking.cost, cost) == 0 && bookingDateTime.equals(booking.bookingDateTime) && startLocation.equals(booking.startLocation) && endLocation.equals(booking.endLocation);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(bookingId, passengerId, vehicleId, bookingDateTime, startLocation, endLocation, cost);
-    }
 
     @Override
     public String toString() {

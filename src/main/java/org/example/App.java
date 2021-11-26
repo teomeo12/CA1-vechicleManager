@@ -28,7 +28,8 @@ public class App
         System.out.println("List of all passengers:");
 
         //creating new passangers
-        passengerStore.addPassenger("Iggy Pop","iggy@gmail.com","0838691644",34.3623,-23.2345);
+        passengerStore.addPassenger("Iggy Pop","iggy@gmail.com","0448691644",34.3623,-23.2345);
+        passengerStore.addPassenger("Jony Rotten","JohnRott@gmail.com","04458691644",54.3623,-13.2345);
         passengerStore.displayAllPassengers();
 
         //vehicle manager file reading
@@ -37,9 +38,9 @@ public class App
         vehicleManager.displayAllVehicles();
 
         //find vehicle by registration number
-       System.out.println("\n****************Vechicle with regNumber 151D987105************ ");
-       String reg="151D987105";
-       Vehicle v = vehicleManager.findvehicleByRegNumber(reg);
+        System.out.println("\n****************Vechicle with regNumber 151D987105************ ");
+        String reg="151D987105";
+        Vehicle v = vehicleManager.findvehicleByRegNumber(reg);
         //vehicleManager.findvehicleByRegNumber(reg);
 
         if(v != null){
@@ -49,14 +50,27 @@ public class App
         }
 
         //creating new booking
-       BookingManager bookingManager = new BookingManager("bookings.txt");
+        BookingManager bookingManager = new BookingManager("bookings.txt");
 
         //create new cars
 
 
-        Vehicle car = new Car("Car","Hyundai","I40",4,"161MN3238107",6.00,2016,05,24,156000,54.2543,-16.4444,5);
+        Vehicle car = new Car("Car","Mercedes","E220",4,
+                "171D23507",7.00,2017,8,2,
+                186000,54.2543,-16.4444,6);
 
+        Vehicle car1 = new Car("4x4","Mercedes","G550",4,
+                "101D23507",7.00,2010,3,23,
+                245600,54.2543,-16.4444,7);
 
-        System.out.println("Program exiting... Goodbye");
+        vehicleManager.addNewCar(car);
+        vehicleManager.addNewCar(car1);
+        System.out.println("\n**********Added new Vehicle from User*****************");
+        vehicleManager.displayAllVehicles();
+
+        System.out.println("\n************List of all Bookings********************");
+        bookingManager.displayAllBookings();
+
+        System.out.println("\nProgram exiting... Goodbye");
     }
 }

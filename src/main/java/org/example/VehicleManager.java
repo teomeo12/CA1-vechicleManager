@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class VehicleManager {
     private final ArrayList<Vehicle> vehicleList;  // for Car and Van objects
-
+    //constructor
     public VehicleManager(String fileName) {
         this.vehicleList = new ArrayList<>();
         loadVehiclesFromFile(fileName);
@@ -74,9 +74,22 @@ public class VehicleManager {
         for (Vehicle v : vehicleList) {
             if (v.getRegistration().equalsIgnoreCase(reg)) {
                 return v;
-              //  System.out.println(v);
+                //  System.out.println(v);
             }
         }
         return null;
     }
+
+
+    public Vehicle addNewCar(Vehicle e){
+        vehicleList.add(e);
+        return null;
+    }
+
+    public Vehicle deleteVehicle(Vehicle e){
+        vehicleList.remove(e);
+        return null;
+    }
+
+
 }
