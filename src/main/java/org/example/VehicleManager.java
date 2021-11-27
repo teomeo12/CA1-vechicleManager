@@ -18,6 +18,8 @@ public class VehicleManager {
             System.out.println(v.toString());
     }
 
+
+
     public void loadVehiclesFromFile(String fileName) {
         try {
             Scanner sc = new Scanner(new File(fileName));
@@ -74,11 +76,22 @@ public class VehicleManager {
         for (Vehicle v : vehicleList) {
             if (v.getRegistration().equalsIgnoreCase(reg)) {
                 return v;
-                //  System.out.println(v);
             }
         }
         return null;
     }
+
+    public ArrayList findvehicleByType(String type) {
+       ArrayList<Vehicle> newList = new ArrayList<>();
+        for (Vehicle v : vehicleList) {
+            if (v.getType().equalsIgnoreCase(type)) {
+                   newList.add(v);
+
+            }
+        }
+        return newList;
+    }
+
 
 
     public Vehicle addNewCar(Vehicle e){
@@ -91,5 +104,11 @@ public class VehicleManager {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return "VehicleManager{" +
+                "vehicleList=" + vehicleList +
+                '}';
+    }
 
 }

@@ -15,13 +15,14 @@ public class BookingManager
     // Constructor
     public BookingManager(String fileName) {
         this.bookingList = new ArrayList<>();
+        loadBookingFromFile(fileName);
     }
 
     //TODO implement functionality as per specification
     //load booking from file bookings.txt
-    public void loadBookingFromFile(){
+    public void loadBookingFromFile(String fileName){
         try{
-            Scanner sc = new Scanner(new File("bookings.txt"));
+            Scanner sc = new Scanner(new File(fileName));
             sc.useDelimiter("[,\r\n]+");
             while(sc.hasNext()){
                 int bookID = sc.nextInt();
@@ -38,6 +39,13 @@ public class BookingManager
         }
     }
 
+    public BookingManager(ArrayList<Booking> bookingList, PassengerStore passengerStore, VehicleManager vehicleManager) {
+        this.bookingList = bookingList;
+        this.passengerStore = passengerStore;
+        this.vehicleManager = vehicleManager;
+    }
+
+    //public BookingManager()
 
     //display All bookings
     public void displayAllBookings() {

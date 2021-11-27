@@ -55,6 +55,13 @@ public class PassengerStore {
         }
     }
 
+    @Override
+    public String toString() {
+        return "PassengerStore{" +
+                "passengerList=" + passengerList +
+                '}';
+    }
+
     // TODO - see functional spec for details of code to add
     public void addPassenger(String name, String email, String phone, double latitude, double longitude) {
         Passenger passenger1 = new Passenger(name, email, phone, latitude, longitude);
@@ -70,6 +77,16 @@ public class PassengerStore {
             passengerList.add(passenger1);
         }
 
+    }
+    public Passenger findPassengerByName(String name) {
+
+        for (Passenger p : passengerList) {
+            if (p.getName().equalsIgnoreCase(name)) {
+                return p;
+                //  System.out.println(v);
+            }
+        }
+        return null;
     }
 
 } // end class
