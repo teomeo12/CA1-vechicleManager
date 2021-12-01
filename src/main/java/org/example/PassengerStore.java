@@ -1,6 +1,8 @@
 package org.example;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +89,43 @@ public class PassengerStore {
             }
         }
         return null;
+    }
+    public void addPassengerInFile(String name, String email, String phone, double latitude, double longitude) {
+//        Passenger passenger1 = new Passenger(name, email, phone, latitude, longitude);
+//        try {
+//           BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\teodo\\Desktop\\aYEAR2\\OOP\\Projects\\CA1-vechicleManager\\output.txt"));
+//            bw.write(String.valueOf(new Passenger(name, email, phone, latitude, longitude)));
+//
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        Passenger passenger1 = new Passenger(name, email, phone, latitude, longitude);
+
+        try {
+            FileWriter writer = new FileWriter("passangerNew.txt");
+
+            writer.write(String.valueOf(passenger1));
+
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//
+//        boolean found = false;
+//        for (Passenger p : passengerList) {
+//
+//            if (p.equals(passenger1)) {
+//                found = true;
+//                break; //its stops the for loop here
+//            }
+//        }
+//        if (found == false) {
+//            passengerList.add(passenger1);
+//        }
+
+
     }
 
 } // end class

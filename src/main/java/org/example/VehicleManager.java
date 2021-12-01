@@ -13,13 +13,6 @@ public class VehicleManager {
         loadVehiclesFromFile(fileName);
     }
 
-    public void displayAllVehicles() {
-        for (Vehicle v : vehicleList)
-            System.out.println(v.toString());
-    }
-
-
-
     public void loadVehiclesFromFile(String fileName) {
         try {
             Scanner sc = new Scanner(new File(fileName));
@@ -71,6 +64,12 @@ public class VehicleManager {
     }
 
     //TODO add more functionality as per spec.
+    //Display all vehicles method
+    public void displayAllVehicles() {
+        for (Vehicle v : vehicleList)
+            System.out.println(v.toString());
+    }
+    //Find all vehicles by registration number method
     public Vehicle findvehicleByRegNumber(String reg) {
 
         for (Vehicle v : vehicleList) {
@@ -80,7 +79,7 @@ public class VehicleManager {
         }
         return null;
     }
-
+    //Find all vehicles by Type of vehicle e.g. VAN,4x4  method
     public ArrayList findvehicleByType(String type) {
        ArrayList<Vehicle> newList = new ArrayList<>();
         for (Vehicle v : vehicleList) {
@@ -94,7 +93,7 @@ public class VehicleManager {
 
 
 
-    public Vehicle addNewCar(Vehicle e){
+    public Vehicle addNewVehicle(Vehicle e){
         vehicleList.add(e);
         return null;
     }

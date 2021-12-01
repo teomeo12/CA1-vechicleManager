@@ -110,7 +110,7 @@ public class App {
         // create VehicleManager, and load all vehicles from text file
         vehicleManager = new VehicleManager("vehicles.txt");
         // create BookingManager, and load all bookings from text file
-        bookingManager = new BookingManager("bookings.txt");
+       // bookingManager = new BookingManager("bookings.txt");
 
         passengerStore.addPassenger("Iggy Pop", "iggy@gmail.com", "0448691644", 34.3623, -23.2345);
         passengerStore.addPassenger("Jony Rotten", "JohnRott@gmail.com", "04458691644", 54.3623, -13.2345);
@@ -127,9 +127,9 @@ public class App {
                 "121D23507", 7.00, 2012, 3, 23,
                 345600, 24.2543, -6.4444, 700);
 
-        vehicleManager.addNewCar(car);
-        vehicleManager.addNewCar(car1);
-        vehicleManager.addNewCar(van1);
+        vehicleManager.addNewVehicle(car);
+        vehicleManager.addNewVehicle(car1);
+        vehicleManager.addNewVehicle(van1);
 
         try {
             displayMainMenu();        // User Interface - Menu
@@ -215,15 +215,17 @@ public class App {
                                     + "*  1. Show all Passengers     *\n"
                                     + "*  2. Find Passenger by Name  *\n"
                                     + "*  3. Add new Passenger       *\n"
-                                    + "*  4. Exit                    *\n"
+                                    + "*  4. Add new PassengerFile       *\n"
+                                    + "*  5. Exit                    *\n"
                                     + "*-----------------------------*\n"
-                                    + "*     Enter Option [1,4]      *\n"
+                                    + "*     Enter Option [1,5]      *\n"
                                     + "*-----------------------------*";
 
         final int SHOW_ALL = 1;
         final int FIND_BY_NAME = 2;
         final int ADD_NEW_PASSENGER = 3;
-        final int EXIT = 4;
+        final int ADD_NEW_PASSENGERFILE = 4;
+        final int EXIT = 5;
 
         Scanner keyboard = new Scanner(System.in);
         int option = 0;
@@ -284,6 +286,37 @@ public class App {
                                 System.out.println(INPUT_MIS_MATCH);
 
                              }
+                    case ADD_NEW_PASSENGERFILE:
+                        System.out.println("*-----------------------------*");
+                        System.out.println("*      Add new passenger      *");
+                        System.out.println("*-----------------------------*");
+                        System.out.println("\nEnter passenger name: ");
+
+                        String pName1 = keyboard.nextLine();
+                        System.out.println("\nEnter passenger Email: ");
+                        String pEmail1 = keyboard.nextLine();
+                        System.out.println("\nEnter passenger telephone number: ");
+                        String pPhone1 = keyboard.nextLine();
+
+
+                        try{
+                            System.out.println("\nEnter passenger latitude coordinate: ");
+                            double platitude = keyboard.nextDouble();
+                            System.out.println("\nEnter passenger longitude coordinate: ");
+                            double plongitude = keyboard.nextDouble();
+                            passengerStore.addPassengerInFile(pName1, pEmail1, pPhone1, platitude, plongitude);
+
+                            System.out.println("*-----------------------------*");
+                            System.out.println("*   New passenger is added    *");
+                            System.out.println("*-----------------------------*\n");
+
+                            keyboard.nextLine();
+
+                        }catch (Exception e){
+                            keyboard.nextLine();
+                            System.out.println(INPUT_MIS_MATCH);
+
+                        }
 
                     case EXIT:
                         System.out.println("Exit Menu option chosen");
@@ -301,7 +334,7 @@ public class App {
     private void displayVehicleMenu() {
         final String MENU_ITEMS =
                   "*--------------------------------------------*\n"
-                + "*            *** VEHICLE MEN ***             *\n"
+                + "*            *** VEHICLE MENU ***             *\n"
                 + "*--------------------------------------------*\n"
                 + "*   1. Show all Vehicles                     *\n"
                 + "*   2. Find Vehicles by Registration Number  *\n"
