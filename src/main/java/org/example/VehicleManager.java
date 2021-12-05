@@ -1,6 +1,8 @@
 package org.example;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -35,8 +37,6 @@ public class VehicleManager {
                 double latitude = sc.nextDouble();  // Depot GPS location
                 double longitude = sc.nextDouble();
 
-
-
                 if (type.equalsIgnoreCase("Van") ||
                         type.equalsIgnoreCase("Truck") ) {
                     int loadSpace = sc.nextInt();
@@ -69,6 +69,17 @@ public class VehicleManager {
         for (Vehicle v : vehicleList)
             System.out.println(v.toString());
     }
+
+    //FIND Vehicle by ID
+    public Vehicle findVehicleByID(int id) {
+
+        for (Vehicle v : vehicleList) {
+            if (v.getId() == id) {
+                return v;
+            }
+        }
+        return null;
+    }
     //Find all vehicles by registration number method
     public Vehicle findvehicleByRegNumber(String reg) {
 
@@ -90,8 +101,74 @@ public class VehicleManager {
         }
         return newList;
     }
+    public Vehicle addNewVehicleFile(Vehicle e){
+        vehicleList.add(e);
+        return null;
+    }
 
 
+    public void addNewVehicleFiLe(String type, String make, String model, double milesPerKwH,
+                                  String registration, double costPerMile,
+                                  int year, int month, int day,
+                                  int mileage, double latitude, double longitude,
+                                  double loadSpace) {
+
+        Vehicle vehicle = new Van(type, make,model, milesPerKwH,registration, costPerMile,year
+                ,month,day,mileage,latitude,longitude,loadSpace);
+
+        boolean found = false;
+        for (Vehicle v : vehicleList) {
+
+            if (v.equals(vehicle)) {
+                found = true;
+                System.out.println("The vehicle already exist");
+                break; //its stops the for loop here
+            }
+        }
+        if (found == false) {
+            try {
+                //  FileWriter writer = new FileWriter("passangerNew.txt");
+                BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\teodo\\Desktop\\aYEAR2\\OOP\\Projects\\CA1-vechicleManager\\vehicleNew.txt"));
+
+                writer.write(String.valueOf(vehicle));
+                writer.close();
+                vehicleList.add(vehicle);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public void addNewVehicleFiLe(String type, String make, String model, double milesPerKwH,
+                                  String registration, double costPerMile,
+                                  int year, int month, int day,
+                                  int mileage, double latitude, double longitude,
+                                  int numSeats) {
+
+        Vehicle vehicle = new Van(type, make,model, milesPerKwH,registration, costPerMile,year
+                ,month,day,mileage,latitude,longitude,numSeats);
+
+        boolean found = false;
+        for (Vehicle v : vehicleList) {
+
+            if (v.equals(vehicle)) {
+                found = true;
+                System.out.println("The vehicle already exist");
+                break; //its stops the for loop here
+            }
+        }
+        if (found == false) {
+            try {
+                //  FileWriter writer = new FileWriter("passangerNew.txt");
+                BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\teodo\\Desktop\\aYEAR2\\OOP\\Projects\\CA1-vechicleManager\\vehicleNew.txt"));
+
+                writer.write(String.valueOf(vehicle));
+                writer.close();
+                vehicleList.add(vehicle);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public Vehicle addNewVehicle(Vehicle e){
         vehicleList.add(e);

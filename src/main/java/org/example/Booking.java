@@ -29,6 +29,8 @@ class Booking
         this.endLocation = endLocation;
         this.cost = cost;
     }
+
+
     //constructor, when the ID is available from reading the file
     public Booking(int bookingId, int passengerId, int vehicleId, LocalDateTime bookingDateTime,
                    LocationGPS startLocation, LocationGPS endLocation, double cost)
@@ -98,6 +100,19 @@ class Booking
         this.cost = cost;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Booking booking = (Booking) o;
+        return bookingId == booking.bookingId && passengerId == booking.passengerId && vehicleId == booking.vehicleId && Double.compare(booking.cost, cost) == 0 && bookingDateTime.equals(booking.bookingDateTime) && startLocation.equals(booking.startLocation) && endLocation.equals(booking.endLocation) && idGenerator.equals(booking.idGenerator);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bookingId, passengerId, vehicleId, bookingDateTime, startLocation, endLocation, cost, idGenerator);
+    }
 
     @Override
     public String toString() {

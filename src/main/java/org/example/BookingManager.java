@@ -6,43 +6,45 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class BookingManager
-{
+public class BookingManager {
     private final ArrayList<Booking> bookingList;
     private PassengerStore passengerStore;
     private VehicleManager vehicleManager;
 
     // Constructor
-    public BookingManager(String fileName) {
+    public BookingManager(String fileName, VehicleManager vehicleManager,
+                          PassengerStore passengerStore) {
         this.bookingList = new ArrayList<>();
+        this.vehicleManager = vehicleManager;
+        this.passengerStore = passengerStore;
         loadBookingFromFile(fileName);
     }
 
+
     //TODO implement functionality as per specification
     //load booking from file bookings.txt
-    public void loadBookingFromFile(String fileName){
-        try{
+    public void loadBookingFromFile(String fileName) {
+        try {
             Scanner sc = new Scanner(new File(fileName));
             sc.useDelimiter("[,\r\n]+");
-            while(sc.hasNext()){
+            while (sc.hasNext()) {
                 int bookID = sc.nextInt();
-                int vehicleID = sc.nextInt();
                 int passengerID = sc.nextInt();
-               // LocalDateTime = sc.
-                //how to do the time
-                double startLoc = sc.nextDouble();
-                double endLoc = sc.nextDouble();
+                int vehicleID = sc.nextInt();
+                int year = sc.nextInt();   // last service date
+                int month = sc.nextInt();
+                int day = sc.nextInt();
+                int hours = sc.nextInt();
+                int min = sc.nextInt();
+                double startLatitude = sc.nextDouble();
+                double startLongtitude = sc.nextDouble();
+                double endLatitude = sc.nextDouble();
+                double endLongtitude = sc.nextDouble();
             }
             sc.close();
-        }catch(IOException e){
+        } catch (IOException e) {
             System.out.println("Exception thrown. " + e);
         }
-    }
-
-    public BookingManager(ArrayList<Booking> bookingList, PassengerStore passengerStore, VehicleManager vehicleManager) {
-        this.bookingList = bookingList;
-        this.passengerStore = passengerStore;
-        this.vehicleManager = vehicleManager;
     }
 
     //public BookingManager()
@@ -54,15 +56,55 @@ public class BookingManager
     }
     //add booking
 
-    public static void addBooking(){
+    public void addBooking(int passengerId, int vehicleId, LocalDateTime bookingDateTime,
+                           LocationGPS startLocation, LocationGPS endLocation, double cost) {
+        if (passengerStore.findPassengerByID(passengerId) != null) {
+            if (vehicleManager.findVehicleByID(vehicleId) != null) {
 
 
+                Booking booking = new Booking(passengerId, vehicleId, bookingDateTime, startLocation, endLocation, cost);
+                bookingList.add(booking);
+
+                System.out.println("The booking is added!");
+            }
+
+        } else {
+            System.out.println("There is no such passenger in the file");
+        }
+        //  return null;
     }
+
     //find booking
-    public static void findBooking(){
+    public Booking findBooking(int id) {
+        for (Booking b : bookingList) {
+            if (b.getBookingId() == id) {
+                return b;
+            }
+        }
+        return null;
+
+    }
+
+    public void editBooking(int id) {
 
 
     }
 
+    public void deleteBooking(int id) {
+        for (Booking b : bookingList) {
+            if (b.getBookingId() == id) {
+
+                bookingList.remove(b);
+                System.out.println("The booking with id " + id + " is deleted.");
+                break;
+            } else {
+                System.out.println("There is no booking with id " + id + " in the list!");
+            }
+
+        }
+    }
 
 }
+
+
+
