@@ -58,10 +58,10 @@ public class PassengerStore {
     public void displayAllPassengers() {
         if (!passengerList.isEmpty()) {
             System.out.println("--------------------------------------------------------------------------------------------------------------");
-            System.out.printf("%-5s %-15s %-25s %-15s %-15s \n","ID" ," Name"," Email"," Phone" ,"Location");
+            System.out.printf("%-5s %-15s %-25s %-15s %-15s %-15s\n","ID" ," Name"," Email"," Phone" ,"Latitude","Longtitude");
             System.out.println("--------------------------------------------------------------------------------------------------------------");
             for (Passenger p : this.passengerList) {
-                System.out.printf("%-5d %-15s %-25s %-15s %-15s \n",p.getId() , p.getName(), p.getEmail(),p.getPhone(),p.getLocation());
+                System.out.printf("%-5d %-15s %-25s %-15s %-15s %-15s \n",p.getId() , p.getName(), p.getEmail(),p.getPhone(),p.getLocation().getLatitude(),p.getLocation().getLongitude());
                // System.out.println(p.toString());
             }
         } else {
@@ -70,12 +70,11 @@ public class PassengerStore {
 
     }
     //Add new passenger
-    public void addPassenger(String name, String email, String phone, double latitude, double longitude) throws IOException {
-        Passenger passenger1 = new Passenger(name, email, phone, latitude, longitude);
+    public Passenger addNewPassenger(Passenger p) throws IOException {
         boolean found = false;
-        for (Passenger p : passengerList) {
+        for (Passenger p1 : passengerList) {
 
-            if (p.equals(passenger1)) {
+            if (p1.equals(p)) {
                 found = true;
                 System.out.println("There is a passenger with the same details!");
                 break; //its stops the for loop here
@@ -83,93 +82,118 @@ public class PassengerStore {
         }
         if (found == false) {
 
-           passengerList.add(passenger1);
+           passengerList.add(p);
 
             System.out.println("*-----------------------------*");
             System.out.println("*   New passenger is added    *");
             System.out.println("*-----------------------------*\n");
         }
-
+        return null;
     }
 
-    //cheking for duplicates
-    public boolean chekForDuplicates(Object p1){
+    //ADD Passenger in the file   C:\Users\teodo\Desktop\aYEAR2\OOP\Projects\CA1-vechicleManager\
+    public void addPassengerInFile() throws IOException {
+        FileWriter writer = new FileWriter("passengers.txt");
         for (Passenger p : passengerList) {
+            String data = p.getId()+","+ p.getName() +","+ p.getEmail() +","+ p.getPhone() +","+ p.getLocation().getLatitude() +","+ p.getLocation().getLongitude();
+            writer.append(data+"\n");
 
-            if (p.equals(p1)) {
-                System.out.println("The passenger already exist");
-                break; //its stops the for loop here
-            }
         }
-        return true;
+        writer.close();
+        System.out.println("The data in the passenger file is updated and saved!!!");
+
     }
 
-    //ADD Passenger in the file
-    public void addPassengerInFile(String name, String email, String phone, double latitude, double longitude) {
 
-        Passenger p1 = new Passenger(name, email, phone, latitude, longitude);
-
-        boolean found = false;
-        for (Passenger p : passengerList) {
-
-            if (p.equals(p1)) {
-                found = true;
-                System.out.println("The passenger already exist");
-                break; //its stops the for loop here
-            }
-        }
-
-        if (found == false) {
-            try {
-
-                FileWriter writer = new FileWriter("C:\\Users\\teodo\\Desktop\\aYEAR2\\OOP\\Projects\\CA1-vechicleManager\\passengers.txt",true);
-
-               String data = p1.getId()+","+p1.getName()+","+p1.getEmail()+","+p1.getPhone()+","+latitude+","+longitude;
-               // String data = p1.getId()+","+name+","+email+","+phone+","+latitude+","+longitude+"\n";
-                writer.write( data);
-                writer.close();
-
-                passengerList.add(p1);
-               //loading the file again
-              // loadPassengerDataFromFile("passengers.txt");
-
-                System.out.println("*-----------------------------*");
-                System.out.println("*   New passenger is added    *");
-                System.out.println("*-----------------------------*\n");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
+//    public void addPassengerInFile(String name, String email, String phone, double latitude, double longitude) {
+//
+//        Passenger p1 = new Passenger(name, email, phone, latitude, longitude);
+//
+//        boolean found = false;
+//        for (Passenger p : passengerList) {
+//
+//            if (p.equals(p1)) {
+//                found = true;
+//                System.out.println("The passenger already exist");
+//                break; //its stops the for loop here
+//            }
+//        }
+//
+//        if (found == false) {
+//            try {
+//
+//              //  FileWriter writer = new FileWriter("C:\\Users\\teodo\\Desktop\\aYEAR2\\OOP\\Projects\\CA1-vechicleManager\\passengers.txt",true);
+//
+//               String data = p1.getId()+","+p1.getName()+","+p1.getEmail()+","+p1.getPhone()+","+latitude+","+longitude;
+//               // String data = p1.getId()+","+name+","+email+","+phone+","+latitude+","+longitude+"\n";
+//                writer.write( data);
+//                writer.close();
+//
+//               // passengerList.add(p1);
+//
+//
+//                System.out.println("*-----------------------------*");
+//                System.out.println("*   New passenger is added    *");
+//                System.out.println("*-----------------------------*\n");
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+    //Edit Passenger
     public void editPassenger(int id) {
+
+        Passenger p = findPassengerByID(id);
+
         Scanner kb = new Scanner(System.in);
-        boolean found = false;
-        for (Passenger p : passengerList) {
+        System.out.println("Please enter passenger new Name: ");
+        String newName = kb.nextLine();
+        System.out.println("Please enter passenger new Email: ");
+        String newEmail = kb.nextLine();
+        System.out.println("Please enter passenger new Phone number: ");
+        String newPhone = kb.nextLine();
+        System.out.println("Please enter passenger new latitude location: ");
+        double newLatitude = Double.parseDouble(kb.nextLine());
+        System.out.println("Please enter passenger new longitude location: ");
+        double newLongitude = Double.parseDouble(kb.nextLine());
 
-            if (p.getId() == id) {
-                 found = true;
-                System.out.println("Please enter passenger new Name: ");
-                String newName = kb.nextLine();
-                System.out.println("Please enter passenger new Email: ");
-                String newEmail = kb.nextLine();
-                System.out.println("Please enter passenger new Phone number: ");
-                String newPhone = kb.nextLine();
-                System.out.println("Please enter passenger new latitude location: ");
-                double newLatitude = kb.nextDouble();
-                System.out.println("Please enter passenger new longitude location: ");
-                double newLongitude = kb.nextDouble();
+        p.setName(newName);
+        p.setEmail(newEmail);
+        p.setPhone(newPhone);
+        p.setLocation(newLatitude,newLongitude);
 
-                Passenger editPassenger = new Passenger(newName, newEmail, newPhone, newLatitude, newLongitude);
-                passengerList.set(p.getId(),editPassenger);
-                System.out.println("\n~~##  The passenger with id " + id + " is edited.  ##~~");
-                break;
-            }
+        System.out.println("*--------------------------------------------------*");
+        System.out.println("*      The passenger with ID "+id+" is edited.     *");
+        System.out.println("*--------------------------------------------------*");
 
-        }
-        if (found == false) {
-            System.out.println("\n~~##  There is no passenger with id " + id + " in the list!   ##~~");
-        }
+
+//        Scanner kb = new Scanner(System.in);
+//        boolean found = false;
+//        for (Passenger p : passengerList) {
+//
+//            if (p.getId() == id) {
+//                 found = true;
+//                System.out.println("Please enter passenger new Name: ");
+//                String newName = kb.nextLine();
+//                System.out.println("Please enter passenger new Email: ");
+//                String newEmail = kb.nextLine();
+//                System.out.println("Please enter passenger new Phone number: ");
+//                String newPhone = kb.nextLine();
+//                System.out.println("Please enter passenger new latitude location: ");
+//                double newLatitude = kb.nextDouble();
+//                System.out.println("Please enter passenger new longitude location: ");
+//                double newLongitude = kb.nextDouble();
+//               // LocationGPS loc = new LocationGPS(newLatitude,newLongitude);
+//
+//                passengerList.set(p.setName(newName),p.setEmail(newEmail),p.setPhone(newPhone),p.setLocation(newLatitude,newLongitude));
+//                System.out.println("\n~~##  The passenger with id " + id + " is edited.  ##~~");
+//                break;
+//            }
+//
+//        }
+//        if (found == false) {
+//            System.out.println("\n~~##  There is no passenger with id " + id + " in the list!   ##~~");
+//        }
     }
     //FIND Passenger by name
     public Passenger findPassengerByName(String name) {
@@ -189,7 +213,9 @@ public class PassengerStore {
         for (Passenger p : passengerList) {
             if (p.getId() == id) {
                 return p;
-                //  System.out.println(v);
+
+            }else{
+                System.out.println("\n~~##  There is no passenger with id " + id + " in the list!   ##~~");
             }
         }
         return null;

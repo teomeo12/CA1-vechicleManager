@@ -4,7 +4,6 @@ public class Car extends Vehicle{
     private int numSeats;
 
 
-
     public Car(String type, String make, String model, double milesPerKwH,
                String registration, double costPerMile, int year, int month, int day,
                int mileage, double latitude, double longitude,

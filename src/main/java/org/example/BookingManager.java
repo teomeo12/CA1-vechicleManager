@@ -1,6 +1,7 @@
 package org.example;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -72,33 +73,103 @@ public class BookingManager {
         }
           return null;
     }
-    public double costBooking(double startLatitude,double startLongtitude,
+
+    //ADD Booking in the file -  booking.txt
+    public void addBookingInFile() throws IOException {
+        FileWriter writer = new FileWriter("bookings.txt");
+        for (Booking b : bookingList) {
+            String data = b.getBookingId()+","+ b.getPassengerId() +","+ b.getVehicleId() +","+ b.getBookingDateTime().getYear() +","+ b.getBookingDateTime().getDayOfMonth() +","
+                    + b.getBookingDateTime().getDayOfWeek() +","+ b.getBookingDateTime().getHour() +","+ b.getBookingDateTime().getMinute() +","+ b.getStartLocation().getLatitude()+ ","
+                    + b.getStartLocation().getLongitude() + "," + b.getEndLocation().getLatitude() + "," + b.getEndLocation().getLongitude() +","+ b.getCost();
+
+            writer.append(data+"\n");
+
+        }
+        writer.close();
+        System.out.println("The data in the booking file is updated and saved!!!");
+
+    }
+
+    //Edit Booking
+    public void editBooking(int id) {
+
+        Booking b = findBooking(id);
+
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("Please enter passenger ID: ");
+        int passengerId = Integer.parseInt(keyboard.nextLine()) ;
+        System.out.println("Please enter vehicle ID: ");
+        int vehicleId = Integer.parseInt(keyboard.nextLine()) ;
+        System.out.println("Please enter year of the booking: ");
+        int yearOfbooking = Integer.parseInt(keyboard.nextLine()) ;
+        System.out.println("Please enter month of the booking: ");
+        int monthOfbooking = Integer.parseInt(keyboard.nextLine()) ;
+        System.out.println("Please enter day of the booking: ");
+        int dayOfbooking = Integer.parseInt(keyboard.nextLine()) ;
+        System.out.println("Please enter hour of the booking: ");
+        int hourOfbooking = Integer.parseInt(keyboard.nextLine()) ;
+        System.out.println("Please enter minute of the booking: ");
+        int minuteOfbooking = Integer.parseInt(keyboard.nextLine()) ;
+
+        //2021,2,1
+        LocalDateTime dateBooking = LocalDateTime.of(yearOfbooking, monthOfbooking, dayOfbooking,
+                hourOfbooking, minuteOfbooking);
+        System.out.println("Please enter start latitude of the booking: ");
+        double startLatitude = Double.parseDouble(keyboard.nextLine());
+        System.out.println("Please enter start longtitude of the booking: ");
+        double startLongtitude = Double.parseDouble(keyboard.nextLine());
+
+        LocationGPS startLocation = new LocationGPS(startLatitude,startLongtitude);
+        System.out.println("Please enter end latitude of the booking: ");
+        double endLatitude = Double.parseDouble(keyboard.nextLine());
+        System.out.println("Please enter end longtitude of the booking: ");
+        double endLongtitude = Double.parseDouble(keyboard.nextLine());
+
+        LocationGPS endLocation = new LocationGPS(endLatitude,endLongtitude);
+        System.out.println("Please enter end cost of the booking: ");
+        double cost = Double.parseDouble(keyboard.nextLine());
+
+        b.setPassengerId(passengerId);
+        b.setVehicleId(vehicleId);
+        b.setBookingDateTime(dateBooking);
+        b.setStartLocation(startLocation);
+        b.setEndLocation(endLocation);
+        b.setCost(cost);
+
+        System.out.println("*--------------------------------------------------*");
+        System.out.println("*      The Booking with ID " + id + " is edited.   *");
+        System.out.println("*--------------------------------------------------*");
+
+    }
+    //Calculate the cost of the booking
+    public double costBooking(double startLatitude, double startLongtitude,
                               double endLatitude, double endLongtitude){
-       double cost=0;
-        double latitude =(endLatitude- startLatitude) ;
-        double longtitude =(endLongtitude- startLongtitude) ;
-        latitude = latitude;
+       double cost=10;
+        double bookLatitude =(endLatitude- startLatitude) ;
+        double bookLongtitude =(endLongtitude- startLongtitude) ;
+
+
 
         return cost;
 
     }
+//    The cost is worked out as the distance from the vehicle depot to the booking start point
+//    plus the distance from the booking start point to the booking end point plus
+//    the distance from the booking end point back to the vehicle depot.
 
-    //find booking
+    //Find booking by ID
     public Booking findBooking(int id) {
         for (Booking b : bookingList) {
             if (b.getBookingId() == id) {
                 return b;
+            }else{
+                System.out.println("\n~~##  There is no booking with id " + id + " in the list!   ##~~");
             }
         }
         return null;
 
     }
-
-    public void editBooking(int id) {
-
-
-    }
-
+    //Delete booking
     public void deleteBooking(int id) {
         for (Booking b : bookingList) {
             if (b.getBookingId() == id) {
@@ -111,6 +182,22 @@ public class BookingManager {
             }
 
         }
+    }
+    @Override
+    public String toString() {
+        String output ="";
+        for (Booking b : bookingList)
+
+            output = b.getBookingId() + b.getPassengerId() + b.getVehicleId() + b.getBookingDateTime().getYear() + b.getBookingDateTime().getDayOfMonth() + String.valueOf(b.getBookingDateTime().getDayOfWeek())+
+                    b.getStartLocation().getLatitude() + b.getStartLocation().getLongitude() + b.getEndLocation().getLatitude() + b.getEndLocation().getLongitude();
+
+        // System.out.printf("%-5s %-15s %-25s %-15s %-15s %-15s\n","ID" ," Name"," Email"," Phone" ,"Latitude","Longtitude");
+
+        return "BookingManager{" +
+                "bookingList=" + bookingList +
+                ", passengerStore=" + passengerStore +
+                ", vehicleManager=" + vehicleManager +
+                '}';
     }
 
 }

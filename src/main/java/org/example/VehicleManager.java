@@ -70,17 +70,16 @@ public class VehicleManager {
     public void displayAllVehicles() {
         if (!vehicleList.isEmpty()) {
             System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------");
-            System.out.printf("%-5s %-6s %-10s %-15s %-15s %-15s %-10s %-13s %-10s %-10s\n","ID" ," Type"," Make"," Model" ,"Miles/KwH","Registration","Cost/mile","Last service","Milage","Depot GPS Location");
+            System.out.printf("%-5s %-6s %-10s %-15s %-15s %-15s %-10s %-13s %-10s %-10s %-15s \n","ID" ," Type"," Make"," Model" ,"Miles/KwH","Registration","Cost/mile","Last service","Milage","Latitude","Longtitude");
             System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------");
             for (Vehicle v : this.vehicleList) {
-                System.out.printf("%-5d %-6s %-10s %-15s %-15s %-15s %-10s %-13s %-10s %-10s \n",v.getId() , v.getType(), v.getMake(),v.getModel(),v.getMilesPerKm(),v.getRegistration(),v.getCostPerMile(),
-                        v.getLastServicedDate(),v.getMileage(),v.getDepotGPSLocation());
+                System.out.printf("%-5d %-6s %-10s %-15s %-15s %-15s %-10s %-13s %-10s %-10s %-15.4f  \n",v.getId() , v.getType(), v.getMake(),v.getModel(),v.getMilesPerKm(),v.getRegistration(),v.getCostPerMile(),
+                        v.getLastServicedDate(),v.getMileage(),v.getDepotGPSLocation().getLatitude(),v.getDepotGPSLocation().getLongitude());
                 // System.out.println(p.toString());
             }
         } else {
             System.out.println("\n ~~##   There is no passengers in the list!   ##~~");
         }
-
     }
 
     //FIND Vehicle by ID
@@ -114,6 +113,7 @@ public class VehicleManager {
         }
         return newList;
     }
+    //Find vehicle by number of seats
     public ArrayList findvehicleByNumSeat(int numSeats) {
 
         ArrayList<Vehicle> newList1 = new ArrayList<>();
@@ -127,36 +127,50 @@ public class VehicleManager {
         return newList1;
     }
 
+    //Add the vehicles to the file "vehicle.txt"
     public void addToFIle() throws IOException{
-
-        FileWriter writer = new FileWriter("vehicle.txt",true);
+      //  FileWriter writer1 = new FileWriter("C:\\Users\\teodo\\Desktop\\aYEAR2\\OOP\\Projects\\CA1-vechicleManager\\passengers.txt",true);
+        FileWriter writer = new FileWriter("C:\\Users\\teodo\\Desktop\\aYEAR2\\OOP\\Projects\\CA1-vechicleManager\\vehicles.txt");
         for (Vehicle v : vehicleList) {
 
             if (v instanceof Car) {
-               String data = v.getId()+v.getType() + v.getMake() + v.getModel() + v.getMilesPerKm()+
-                v.getRegistration()+v.getCostPerMile()+v.getCostPerMile()+v.getLastServicedDate()+v.getMileage()+
-                       v.getDepotGPSLocation()+ ((Car) v).getNumSeats();
+               String data = v.getId()+","+v.getType() +","+ v.getMake() +","+ v.getModel() +","+ v.getMilesPerKm()+","+
+                v.getRegistration() +"," + v.getCostPerMile() +","+ v.getLastServicedDate() +","+ v.getMileage() +","+
+                       v.getDepotGPSLocation().getLatitude() +","+ v.getDepotGPSLocation().getLongitude() +","+ ((Car) v).getNumSeats();
 
-                writer.write(data);
+                writer.append(data +"\n");
 
-                break; //its stops the for loop here
+
+
             }else{
-                String data = v.getId()+v.getType() + v.getMake() + v.getModel() + v.getMilesPerKm()+
-                        v.getRegistration()+v.getCostPerMile()+v.getCostPerMile()+v.getLastServicedDate()+v.getMileage()+
-                        v.getDepotGPSLocation()+ ((Van) v).getLoadSpace();
+                String data = v.getId()+","+v.getType() +","+ v.getMake() +","+ v.getModel() +","+ v.getMilesPerKm()+","+
+                        v.getRegistration() +"," + v.getCostPerMile() +","+ v.getLastServicedDate() +","+ v.getMileage() +","+
+                        v.getDepotGPSLocation().getLatitude() +","+ v.getDepotGPSLocation().getLongitude() +","+ ((Van) v).getLoadSpace();
 
-                writer.write(data);
+                writer.append(data +"\n");
+
             }
-        }
 
+        }
+        writer.close();
+        System.out.println("The data in the vehicle file is updated and saved!!!");
 
     }
 
-
+        //Passing and Add new vehicle to the Vehicle constructor
     public Vehicle addNewVehicle(Vehicle e) throws IOException {
-        vehicleList.add(e);
-       // addToFIle();
 
+        if(e instanceof Car ){
+            vehicleList.add(e);
+            System.out.println("*-----------------------------*");
+            System.out.println("*   New Car is added          *");
+            System.out.println("*-----------------------------*\n");
+        }else {
+            vehicleList.add(e);
+            System.out.println("*-----------------------------*");
+            System.out.println("*   New Vehicle is added      *");
+            System.out.println("*-----------------------------*\n");
+        }
         return null;
     }
 
