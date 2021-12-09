@@ -43,8 +43,8 @@ public class App {
 
         //*******************************For the menu**********************************************
         // create PassengerStore and load all passenger records from text file
-       // passengerStore = new PassengerStore("passengers.txt");
-        passengerStore = new PassengerStore("passengersNew.txt");
+        passengerStore = new PassengerStore("passengers.txt");
+       // passengerStore = new PassengerStore("passangerNew.txt");
 
         // create VehicleManager, and load all vehicles from text file
         vehicleManager = new VehicleManager("vehicles.txt");
@@ -71,14 +71,14 @@ public class App {
         vehicleManager.addNewVehicle(van1);
 
         //2021,2,1
-        LocalDateTime dateBooking = LocalDateTime.of(2021, 2, 1, 12, 0, 0);
+        LocalDateTime dateBooking = LocalDateTime.of(2021, 2, 1, 12, 0);
 
         LocationGPS startLocation = new LocationGPS(23.23,56.34);
         LocationGPS endLocation = new LocationGPS(12.34,67.89);
 
         //Booking book1 = new Booking(101,115,dateBooking,startLocation,endLocation,314.34);
 
-        bookingManager.addBooking(101,115,dateBooking,
+        bookingManager.createBooking(101,115,dateBooking,
                 startLocation,endLocation,314.34);
 
 
@@ -243,21 +243,25 @@ public class App {
                         System.out.println("*-----------------------------*");
                         System.out.println("\nEnter passenger name: ");
 
-                        String pName1 = keyboard.nextLine();
+                        String pName1 = keyboard.nextLine().trim();
                         System.out.println("\nEnter passenger Email: ");
-                        String pEmail1 = keyboard.nextLine();
+                        String pEmail1 = keyboard.nextLine().trim();
                         System.out.println("\nEnter passenger telephone number: ");
-                        String pPhone1 = keyboard.nextLine();
+                        String pPhone1 = keyboard.nextLine().trim();
 
 
                         try {
                             System.out.println("\nEnter passenger latitude coordinate: ");
-                            double platitudeFile = Double.parseDouble(keyboard.nextLine());
+                            double platitudeFile = Double.parseDouble(keyboard.nextLine().trim());
                             System.out.println("\nEnter passenger longitude coordinate: ");
-                            double plongitudeFile = Double.parseDouble(keyboard.nextLine());
+                            double plongitudeFile = Double.parseDouble(keyboard.nextLine().trim());
 
                             passengerStore.addPassengerInFile(pName1, pEmail1, pPhone1, platitudeFile, plongitudeFile);
 
+//                            Passenger p1 = new Passenger(pName1, pEmail1, pPhone1, platitudeFile, plongitudeFile);
+//                            if(passengerStore.chekForDuplicates(p1)){
+//                                passengerStore.addPassengerInFile(pName1, pEmail1, pPhone1, platitudeFile, plongitudeFile);
+//                            }
 
 
                         } catch (Exception e) {
@@ -292,8 +296,8 @@ public class App {
                         //Display all passengers
                         passengerStore.displayAllPassengers();
                         System.out.println("\nEnter passenger ID to delete: ");
-                        int passIDdel = Integer.parseInt(keyboard.nextLine());;
-
+                        int passIDdel = Integer.parseInt(keyboard.nextLine());
+                        //Delete passenger by ID - passing ID
                        passengerStore.deletePassenger(passIDdel);
                         break;
                     case EXIT:
@@ -318,17 +322,19 @@ public class App {
                         + "*   1. Show all Vehicles                     *\n"
                         + "*   2. Find Vehicles by Registration Number  *\n"
                         + "*   3. Find Vehicles by Type                 *\n"
-                        + "*   4. Add new VehicleFile                   *\n"
-                        + "*   5. Exit                                  *\n"
+                        + "*   4. Find Vehicles by Number of Seats      *\n"
+                        + "*   5. Add new VehicleFile                   *\n"
+                        + "*   6. Exit                                  *\n"
                         + "*--------------------------------------------*\n"
-                        + "*             Enter Option [1,5]             *\n"
+                        + "*             Enter Option [1,6]             *\n"
                         + "*--------------------------------------------*";
 
         final int SHOW_ALL = 1;
         final int FIND_BY_REG = 2;
         final int FIND_BY_TYPE = 3;
-        final int ADD_NEW_VEHICLE = 4;
-        final int EXIT = 5;
+        final int FIND_BY_NUMSEATS = 4;
+        final int ADD_NEW_VEHICLE = 5;
+        final int EXIT = 6;
 
         Scanner keyboard = new Scanner(System.in);
         int option = 0;
@@ -372,6 +378,21 @@ public class App {
                                 System.out.println(vtype);
                             }
                         break;
+                    case FIND_BY_NUMSEATS:
+                        System.out.println("*----------------------------------------*");
+                        System.out.println("*    Find Vehicle by Number of Seats     *");
+                        System.out.println("*----------------------------------------*");
+                        System.out.println("Please enter type of the vehicle: ");
+                        int numOfSeats = Integer.parseInt(keyboard.nextLine());
+
+                        ArrayList<Vehicle> listNumSeat = vehicleManager.findvehicleByNumSeat(numOfSeats);
+                        if (listNumSeat.isEmpty())
+                            System.out.println("No Vehicle with \"" + numOfSeats + "\" number of seats!!");
+                        else
+                            for (Vehicle vNumSeat : listNumSeat) {
+                                System.out.println(vNumSeat);
+                            }
+                        break;
                     case ADD_NEW_VEHICLE:
                         System.out.println("*-----------------------------*");
                         System.out.println("*      Add new Vehicle      *");
@@ -385,43 +406,50 @@ public class App {
                         String enterModel = keyboard.nextLine();
                         try {
                             System.out.println("\nEnter vehicle milesPerKwH: ");
-                            double milesPerKwH = keyboard.nextDouble();
+                            double milesPerKwH = Double.parseDouble(keyboard.nextLine());
                             System.out.println("\nEnter vehicle registration number: ");
                             String registration = keyboard.nextLine();
 
                             System.out.println("\nEnter vehicle cost per mile: ");
-                            double costPerMile = keyboard.nextDouble();
+                            double costPerMile = Double.parseDouble(keyboard.nextLine());
 
                             System.out.println("\nEnter vehicle year of registration: ");
-                            int year = keyboard.nextInt();
+                            int year = Integer.parseInt(keyboard.nextLine());
                             System.out.println("\nEnter vehicle month of registration: ");
-                            int month = keyboard.nextInt();
+                            int month = Integer.parseInt(keyboard.nextLine());
                             System.out.println("\nEnter vehicle day of registration: ");
-                            int day = keyboard.nextInt();
+                            int day = Integer.parseInt(keyboard.nextLine());
                             System.out.println("\nEnter vehicle mileage: ");
-                            int mileage = keyboard.nextInt();
+                            int mileage = Integer.parseInt(keyboard.nextLine());
                             System.out.println("\nEnter vehicle latitude coordinate: ");
-                            double latitude = keyboard.nextDouble();
+                            double latitude = Double.parseDouble(keyboard.nextLine());
                             System.out.println("\nEnter vehicle longitude coordinate: ");
-                            double longitude = keyboard.nextDouble();
+                            double longitude = Double.parseDouble(keyboard.nextLine());
 
 
                             if (enterType.equalsIgnoreCase("Van") ||
                                     enterType.equalsIgnoreCase("Truck") ){
                                 System.out.println("\nEnter vehicle loadSpace: ");
                                 double loadSpace = keyboard.nextDouble();
-                                vehicleManager.addNewVehicleFiLe(enterType,enterMake, enterModel, milesPerKwH,
+                                Vehicle v1 = new Van(enterType,enterMake, enterModel, milesPerKwH,
                                         registration,costPerMile,year, month, day,
                                         mileage, latitude, longitude, loadSpace);
+                                //add New vehicle
+                                vehicleManager.addNewVehicle(v1);
                             }
                             if(enterType.equalsIgnoreCase("Car") || enterType.equalsIgnoreCase("4x4")) {
 
                                 System.out.println("\nEnter vehicle seat number: ");
                                 int numSeats = keyboard.nextInt();
-
-                                vehicleManager.addNewVehicleFiLe(enterType,enterMake, enterModel, milesPerKwH,
+                                Vehicle v1 = new Van(enterType,enterMake, enterModel, milesPerKwH,
                                         registration,costPerMile,year, month, day,
                                         mileage, latitude, longitude, numSeats);
+
+                                vehicleManager.addNewVehicle(v1);
+
+//                                vehicleManager.addNewVehicleFiLe(enterType,enterMake, enterModel, milesPerKwH,
+//                                        registration,costPerMile,year, month, day,
+//                                        mileage, latitude, longitude, numSeats);
                             }
 
                             System.out.println("*-----------------------------*");
@@ -525,11 +553,10 @@ public class App {
                         int hourOfbooking = keyboard.nextInt();
                         System.out.println("Please enter minute of the booking: ");
                         int minuteOfbooking = keyboard.nextInt();
-                        System.out.println("Please enter seconds of the booking: ");
-                        int secOfbooking = keyboard.nextInt();
+
                         //2021,2,1
                         LocalDateTime dateBooking = LocalDateTime.of(yearOfbooking, monthOfbooking, dayOfbooking,
-                                hourOfbooking, minuteOfbooking, secOfbooking);
+                                hourOfbooking, minuteOfbooking);
                         System.out.println("Please enter start latitude of the booking: ");
                         double startLatitude = keyboard.nextDouble();
                         System.out.println("Please enter start longtitude of the booking: ");
@@ -543,19 +570,13 @@ public class App {
 
                         LocationGPS endLocation = new LocationGPS(endLatitude,endLongtitude);
                         System.out.println("Please enter end cost of the booking: ");
-                        double cost = keyboard.nextDouble();
+                        double cost = bookingManager.costBooking(startLatitude,startLongtitude,endLatitude,endLongtitude);
                         //Booking book1 = new Booking(101,115,dateBooking,startLocation,endLocation,314.34);
 
-                        bookingManager.addBooking(passengerId,vehicleId,dateBooking,
+                        bookingManager.createBooking(passengerId,vehicleId,dateBooking,
                                 startLocation,endLocation,cost);
 
-                        String type = keyboard.nextLine();
-
-
-
-
                        // bookingManager.addBooking();
-
 
                         break;
 

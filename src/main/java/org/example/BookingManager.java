@@ -54,9 +54,8 @@ public class BookingManager {
         for (Booking b : bookingList)
             System.out.println(b.toString());
     }
-    //add booking
 
-    public void addBooking(int passengerId, int vehicleId, LocalDateTime bookingDateTime,
+    public Booking createBooking(int passengerId, int vehicleId, LocalDateTime bookingDateTime,
                            LocationGPS startLocation, LocationGPS endLocation, double cost) {
         if (passengerStore.findPassengerByID(passengerId) != null) {
             if (vehicleManager.findVehicleByID(vehicleId) != null) {
@@ -71,7 +70,17 @@ public class BookingManager {
         } else {
             System.out.println("There is no such passenger in the file");
         }
-        //  return null;
+          return null;
+    }
+    public double costBooking(double startLatitude,double startLongtitude,
+                              double endLatitude, double endLongtitude){
+       double cost=0;
+        double latitude =(endLatitude- startLatitude) ;
+        double longtitude =(endLongtitude- startLongtitude) ;
+        latitude = latitude;
+
+        return cost;
+
     }
 
     //find booking

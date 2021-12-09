@@ -9,6 +9,8 @@ import java.util.Scanner;
 
 public class VehicleManager {
     private final ArrayList<Vehicle> vehicleList;  // for Car and Van objects
+    private Object FileWriter;
+
     //constructor
     public VehicleManager(String fileName) {
         this.vehicleList = new ArrayList<>();
@@ -66,8 +68,19 @@ public class VehicleManager {
     //TODO add more functionality as per spec.
     //Display all vehicles method
     public void displayAllVehicles() {
-        for (Vehicle v : vehicleList)
-            System.out.println(v.toString());
+        if (!vehicleList.isEmpty()) {
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.printf("%-5s %-6s %-10s %-15s %-15s %-15s %-10s %-13s %-10s %-10s\n","ID" ," Type"," Make"," Model" ,"Miles/KwH","Registration","Cost/mile","Last service","Milage","Depot GPS Location");
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            for (Vehicle v : this.vehicleList) {
+                System.out.printf("%-5d %-6s %-10s %-15s %-15s %-15s %-10s %-13s %-10s %-10s \n",v.getId() , v.getType(), v.getMake(),v.getModel(),v.getMilesPerKm(),v.getRegistration(),v.getCostPerMile(),
+                        v.getLastServicedDate(),v.getMileage(),v.getDepotGPSLocation());
+                // System.out.println(p.toString());
+            }
+        } else {
+            System.out.println("\n ~~##   There is no passengers in the list!   ##~~");
+        }
+
     }
 
     //FIND Vehicle by ID
@@ -101,77 +114,49 @@ public class VehicleManager {
         }
         return newList;
     }
-    public Vehicle addNewVehicleFile(Vehicle e){
-        vehicleList.add(e);
-        return null;
+    public ArrayList findvehicleByNumSeat(int numSeats) {
+
+        ArrayList<Vehicle> newList1 = new ArrayList<>();
+        for (Vehicle v : vehicleList) {
+            if (v instanceof Car) {
+                if(((Car) v).getNumSeats() ==numSeats)
+                newList1.add(v);
+
+            }
+        }
+        return newList1;
     }
 
+    public void addToFIle() throws IOException{
 
-    public void addNewVehicleFiLe(String type, String make, String model, double milesPerKwH,
-                                  String registration, double costPerMile,
-                                  int year, int month, int day,
-                                  int mileage, double latitude, double longitude,
-                                  double loadSpace) {
-
-        Vehicle vehicle = new Van(type, make,model, milesPerKwH,registration, costPerMile,year
-                ,month,day,mileage,latitude,longitude,loadSpace);
-
-        boolean found = false;
+        FileWriter writer = new FileWriter("vehicle.txt",true);
         for (Vehicle v : vehicleList) {
 
-            if (v.equals(vehicle)) {
-                found = true;
-                System.out.println("The vehicle already exist");
+            if (v instanceof Car) {
+               String data = v.getId()+v.getType() + v.getMake() + v.getModel() + v.getMilesPerKm()+
+                v.getRegistration()+v.getCostPerMile()+v.getCostPerMile()+v.getLastServicedDate()+v.getMileage()+
+                       v.getDepotGPSLocation()+ ((Car) v).getNumSeats();
+
+                writer.write(data);
+
                 break; //its stops the for loop here
+            }else{
+                String data = v.getId()+v.getType() + v.getMake() + v.getModel() + v.getMilesPerKm()+
+                        v.getRegistration()+v.getCostPerMile()+v.getCostPerMile()+v.getLastServicedDate()+v.getMileage()+
+                        v.getDepotGPSLocation()+ ((Van) v).getLoadSpace();
+
+                writer.write(data);
             }
         }
-        if (found == false) {
-            try {
-                //  FileWriter writer = new FileWriter("passangerNew.txt");
-                BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\teodo\\Desktop\\aYEAR2\\OOP\\Projects\\CA1-vechicleManager\\vehicleNew.txt"));
 
-                writer.write(String.valueOf(vehicle));
-                writer.close();
-                vehicleList.add(vehicle);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    public void addNewVehicleFiLe(String type, String make, String model, double milesPerKwH,
-                                  String registration, double costPerMile,
-                                  int year, int month, int day,
-                                  int mileage, double latitude, double longitude,
-                                  int numSeats) {
 
-        Vehicle vehicle = new Van(type, make,model, milesPerKwH,registration, costPerMile,year
-                ,month,day,mileage,latitude,longitude,numSeats);
-
-        boolean found = false;
-        for (Vehicle v : vehicleList) {
-
-            if (v.equals(vehicle)) {
-                found = true;
-                System.out.println("The vehicle already exist");
-                break; //its stops the for loop here
-            }
-        }
-        if (found == false) {
-            try {
-                //  FileWriter writer = new FileWriter("passangerNew.txt");
-                BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\teodo\\Desktop\\aYEAR2\\OOP\\Projects\\CA1-vechicleManager\\vehicleNew.txt"));
-
-                writer.write(String.valueOf(vehicle));
-                writer.close();
-                vehicleList.add(vehicle);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
-    public Vehicle addNewVehicle(Vehicle e){
+
+    public Vehicle addNewVehicle(Vehicle e) throws IOException {
         vehicleList.add(e);
+       // addToFIle();
+
         return null;
     }
 
@@ -187,4 +172,68 @@ public class VehicleManager {
                 '}';
     }
 
+
 }
+
+
+//public void addNewVehicleFiLe(String type, String make, String model, double milesPerKwH,
+//        String registration, double costPerMile,
+//        int year, int month, int day,
+//        int mileage, double latitude, double longitude,
+//        double loadSpace) {
+//
+//        Vehicle vehicle = new Van(type, make,model, milesPerKwH,registration, costPerMile,year
+//        ,month,day,mileage,latitude,longitude,loadSpace);
+//
+//        boolean found = false;
+//        for (Vehicle v : vehicleList) {
+//
+//        if (v.equals(vehicle)) {
+//        found = true;
+//        System.out.println("The vehicle already exist");
+//        break; //its stops the for loop here
+//        }
+//        }
+//        if (found == false) {
+//        try {
+//        //  FileWriter writer = new FileWriter("passangerNew.txt");
+//        BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\teodo\\Desktop\\aYEAR2\\OOP\\Projects\\CA1-vechicleManager\\vehicleNew.txt"));
+//
+//        writer.write(String.valueOf(vehicle));
+//        writer.close();
+//        vehicleList.add(vehicle);
+//        } catch (IOException e) {
+//        e.printStackTrace();
+//        }
+//        }
+//        }
+//public void addNewVehicleFiLe(String type, String make, String model, double milesPerKwH,
+//        String registration, double costPerMile,
+//        int year, int month, int day,
+//        int mileage, double latitude, double longitude,
+//        int numSeats) {
+//
+//        Vehicle vehicle = new Van(type, make,model, milesPerKwH,registration, costPerMile,year
+//        ,month,day,mileage,latitude,longitude,numSeats);
+//
+//        boolean found = false;
+//        for (Vehicle v : vehicleList) {
+//
+//        if (v.equals(vehicle)) {
+//        found = true;
+//        System.out.println("The vehicle already exist");
+//        break; //its stops the for loop here
+//        }
+//        }
+//        if (found == false) {
+//        try {
+//        //  FileWriter writer = new FileWriter("passangerNew.txt");
+//        BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\teodo\\Desktop\\aYEAR2\\OOP\\Projects\\CA1-vechicleManager\\vehicleNew.txt",true));
+//
+//        writer.write(String.valueOf(vehicle));
+//        writer.close();
+//        vehicleList.add(vehicle);
+//        } catch (IOException e) {
+//        e.printStackTrace();
+//        }
+//        }
