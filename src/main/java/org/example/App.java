@@ -435,9 +435,6 @@ public class App {
                                 //ADD new Car || 4x4
                                 vehicleManager.addNewVehicle(v2);
 
-//                                vehicleManager.addNewVehicleFiLe(enterType,enterMake, enterModel, milesPerKwH,
-//                                        registration,costPerMile,year, month, day,
-//                                        mileage, latitude, longitude, numSeats);
                             }
 
 
