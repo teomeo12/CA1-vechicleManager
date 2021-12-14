@@ -46,34 +46,27 @@ public class PassengerStore {
         }
     }
 
-    @Override
-    public String toString() {
-        return "PassengerStore{" +
-                "passengerList=" + passengerList +
-                '}';
-    }
-
     // TODO - see functional spec for details of code to add
-   //Display all passengers
+    //Display all passengers
     public void displayAllPassengers() {
         if (!passengerList.isEmpty()) {
             System.out.println("--------------------------------------------------------------------------------------------------------------");
-            System.out.printf("%-5s %-15s %-25s %-15s %-15s %-15s\n","ID" ," Name"," Email"," Phone" ,"Latitude","Longtitude");
+            System.out.printf("%-5s %-15s %-25s %-15s %-15s %-15s\n", "ID", " Name", " Email", " Phone", "Latitude", "Longtitude");
             System.out.println("--------------------------------------------------------------------------------------------------------------");
             for (Passenger p : this.passengerList) {
-                System.out.printf("%-5d %-15s %-25s %-15s %-15s %-15s \n",p.getId() , p.getName(), p.getEmail(),p.getPhone(),p.getLocation().getLatitude(),p.getLocation().getLongitude());
-               // System.out.println(p.toString());
+                System.out.printf("%-5d %-15s %-25s %-15s %-15s %-15s \n", p.getId(), p.getName(), p.getEmail(), p.getPhone(), p.getLocation().getLatitude(), p.getLocation().getLongitude());
+                // System.out.println(p.toString());
             }
         } else {
             System.out.println("\n ~~##   There is no passengers in the list!   ##~~");
         }
 
     }
+
     //Add new passenger
     public Passenger addNewPassenger(Passenger p) throws IOException {
         boolean found = false;
         for (Passenger p1 : passengerList) {
-
             if (p1.equals(p)) {
                 found = true;
                 System.out.println("There is a passenger with the same details!");
@@ -82,7 +75,7 @@ public class PassengerStore {
         }
         if (found == false) {
 
-           passengerList.add(p);
+            passengerList.add(p);
 
             System.out.println("*-----------------------------*");
             System.out.println("*   New passenger is added    *");
@@ -95,14 +88,87 @@ public class PassengerStore {
     public void addPassengerInFile() throws IOException {
         FileWriter writer = new FileWriter("passengers.txt");
         for (Passenger p : passengerList) {
-            String data = p.getId()+","+ p.getName() +","+ p.getEmail() +","+ p.getPhone() +","+ p.getLocation().getLatitude() +","+ p.getLocation().getLongitude();
-            writer.append(data+"\n");
+            String data = p.getId() + "," + p.getName() + "," + p.getEmail() + "," + p.getPhone() + "," + p.getLocation().getLatitude() + "," + p.getLocation().getLongitude();
+            writer.append(data + "\n");
 
         }
         writer.close();
         System.out.println("The data in the passenger file is updated and saved!!!");
 
     }
+
+    //Edit Passenger
+    public void editPassenger(int id) {
+
+        Passenger p = findPassengerByID(id);
+
+        Scanner kb = new Scanner(System.in);
+        System.out.println("Please enter passenger new Name: ");
+        String newName = kb.nextLine();
+        System.out.println("Please enter passenger new Email: ");
+        String newEmail = kb.nextLine();
+        System.out.println("Please enter passenger new Phone number: ");
+        String newPhone = kb.nextLine();
+        System.out.println("Please enter passenger new latitude location: ");
+        double newLatitude = Double.parseDouble(kb.nextLine());
+        System.out.println("Please enter passenger new longitude location: ");
+        double newLongitude = Double.parseDouble(kb.nextLine());
+
+        p.setName(newName);
+        p.setEmail(newEmail);
+        p.setPhone(newPhone);
+        p.setLocation(newLatitude, newLongitude);
+
+        System.out.println("*--------------------------------------------------*");
+        System.out.println("*      The passenger with ID " + id + " is edited.     *");
+        System.out.println("*--------------------------------------------------*");
+    }
+
+    //Delete passenger
+    public void deletePassenger(int id) {
+        for (Passenger p : passengerList) {
+
+            if (p.getId() == id) {
+
+                passengerList.remove(p);
+                System.out.println("The passenger with id " + id + " is deleted.");
+                break;
+            }
+        }
+    }
+
+    //FIND Passenger by name
+    public Passenger findPassengerByName(String name) {
+
+        for (Passenger p : passengerList) {
+            if (p.getName().equalsIgnoreCase(name)) {
+                return p;
+            }
+        }
+        System.out.println("\n~~##  There is no passenger with name " + name + " in the list!   ##~~");
+        return null;
+    }
+
+    //FIND Passenger by ID
+    public Passenger findPassengerByID(int id) {
+
+        for (Passenger p : passengerList) {
+            if (p.getId() == id) {
+                return p;
+            }
+        }
+        System.out.println("\n~~##  There is no passenger with id " + id + " in the list!   ##~~");
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return "PassengerStore{" +
+                "passengerList=" + passengerList +
+                '}';
+    }
+
+} // end class
 
 
 //    public void addPassengerInFile(String name, String email, String phone, double latitude, double longitude) {
@@ -140,31 +206,6 @@ public class PassengerStore {
 //            }
 //        }
 //    }
-    //Edit Passenger
-    public void editPassenger(int id) {
-
-        Passenger p = findPassengerByID(id);
-
-        Scanner kb = new Scanner(System.in);
-        System.out.println("Please enter passenger new Name: ");
-        String newName = kb.nextLine();
-        System.out.println("Please enter passenger new Email: ");
-        String newEmail = kb.nextLine();
-        System.out.println("Please enter passenger new Phone number: ");
-        String newPhone = kb.nextLine();
-        System.out.println("Please enter passenger new latitude location: ");
-        double newLatitude = Double.parseDouble(kb.nextLine());
-        System.out.println("Please enter passenger new longitude location: ");
-        double newLongitude = Double.parseDouble(kb.nextLine());
-
-        p.setName(newName);
-        p.setEmail(newEmail);
-        p.setPhone(newPhone);
-        p.setLocation(newLatitude,newLongitude);
-
-        System.out.println("*--------------------------------------------------*");
-        System.out.println("*      The passenger with ID "+id+" is edited.     *");
-        System.out.println("*--------------------------------------------------*");
 
 
 //        Scanner kb = new Scanner(System.in);
@@ -194,43 +235,3 @@ public class PassengerStore {
 //        if (found == false) {
 //            System.out.println("\n~~##  There is no passenger with id " + id + " in the list!   ##~~");
 //        }
-    }
-    //FIND Passenger by name
-    public Passenger findPassengerByName(String name) {
-
-        for (Passenger p : passengerList) {
-            if (p.getName().equalsIgnoreCase(name)) {
-                return p;
-                //  System.out.println(v);
-            }
-        }
-        return null;
-    }
-
-    //FIND Passenger by ID
-    public Passenger findPassengerByID(int id) {
-
-        for (Passenger p : passengerList) {
-            if (p.getId() == id) {
-                return p;
-
-            }else{
-                System.out.println("\n~~##  There is no passenger with id " + id + " in the list!   ##~~");
-            }
-        }
-        return null;
-    }
-    //Delete passenger
-    public void deletePassenger(int id) {
-        for (Passenger p : passengerList) {
-
-            if(p.getId() == id) {
-
-                passengerList.remove(p);
-                System.out.println("The passenger with id " + id + " is deleted.");
-                break;
-            }
-        }
-    }
-
-} // end class

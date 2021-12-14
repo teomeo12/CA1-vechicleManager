@@ -31,6 +31,8 @@ public class LocationGPS
         this.longitude = longitude;
     }
 
+    //public double
+
     @Override
     public String toString()
     {

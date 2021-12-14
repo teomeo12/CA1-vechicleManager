@@ -43,25 +43,14 @@ public class App {
         //*******************************For the menu**********************************************
         // create PassengerStore and load all passenger records from text file
         passengerStore = new PassengerStore("passengers.txt");
-       // passengerStore = new PassengerStore("passangerNew.txt");
+
 
         // create VehicleManager, and load all vehicles from text file
         vehicleManager = new VehicleManager("vehicles.txt");
         // create BookingManager, and load all bookings from text file
          bookingManager = new BookingManager("bookings.txt",vehicleManager,passengerStore);
 
-//
-//        //2021,2,1
-//        LocalDateTime dateBooking = LocalDateTime.of(2021, 2, 1, 12, 0);
-//
-//        LocationGPS startLocation = new LocationGPS(23.23,56.34);
-//        LocationGPS endLocation = new LocationGPS(12.34,67.89);
-//
-//        //Booking book1 = new Booking(101,115,dateBooking,startLocation,endLocation,314.34);
-//
-//        bookingManager.createBooking(101,115,dateBooking,
-//                startLocation,endLocation,314.34);
-//
+
 
         try {
             displayMainMenu();        // User Interface - Menu
@@ -187,12 +176,22 @@ public class App {
                         System.out.println("*    Find Passenger by Name   *");
                         System.out.println("*-----------------------------*");
                         System.out.println("\nEnter passenger name: ");
-                        String name = keyboard.nextLine();
-                        Passenger p = passengerStore.findPassengerByName(name);
-                        if (p == null)
-                            System.out.println("No passenger matching the name \"" + name + "\"");
-                        else
-                            System.out.println("Found passenger: \n" + p.toString());
+
+
+                        boolean isNum = false;
+                        while (isNum != true) {
+                            try {
+                                String name = keyboard.nextLine();
+                                isNum = true;
+                               Passenger p =  passengerStore.findPassengerByName(name);
+                                System.out.println(p);
+
+                            } catch (InputMismatchException e) {
+                                keyboard.nextLine();
+                                System.out.println("Please enter a letters for Name!!!");
+                            }
+                        }
+
                         break;
                     case ADD_NEW_PASSENGER:
                         System.out.println("*-----------------------------*");
@@ -205,22 +204,24 @@ public class App {
                         String pEmail = keyboard.nextLine();
                         System.out.println("\nEnter passenger telephone number: ");
                         String pPhone = keyboard.nextLine();
+                        boolean isDouble = false;
+                        while (isDouble != true) {
+                            try {
+                                System.out.println("\nEnter passenger latitude coordinate: ");
+                                double platitude = Double.parseDouble(keyboard.nextLine());
 
+                                System.out.println("\nEnter passenger longitude coordinate: ");
+                                double plongitude = Double.parseDouble(keyboard.nextLine());
+                                isDouble = true;
+                                Passenger p1 = new Passenger(pName, pEmail, pPhone, platitude, plongitude);
 
-                        try {
-                            System.out.println("\nEnter passenger latitude coordinate: ");
-                            double platitude = Double.parseDouble(keyboard.nextLine());
-                            System.out.println("\nEnter passenger longitude coordinate: ");
-                            double plongitude = Double.parseDouble(keyboard.nextLine());
+                                passengerStore.addNewPassenger(p1);
 
-                            Passenger p1 = new Passenger(pName, pEmail, pPhone, platitude, plongitude);
+                            } catch (Exception e) {
 
-                            passengerStore.addNewPassenger(p1);
+                                System.out.println(INPUT_MIS_MATCH);
 
-                        } catch (Exception e) {
-
-                            System.out.println(INPUT_MIS_MATCH);
-
+                            }
                         }
                         break;
 
@@ -232,11 +233,11 @@ public class App {
                         passengerStore.displayAllPassengers();
 
                         System.out.println("\nEnter passenger ID to edit: ");
-                        boolean isNum = false;
-                        while (isNum != true) {
+                        boolean isNum1 = false;
+                        while (isNum1 != true) {
                             try {
                                 int passID = keyboard.nextInt();
-                                isNum = true;
+                                isNum1 = true;
                                 passengerStore.editPassenger(passID);
                                 break;
                             } catch (InputMismatchException e) {
@@ -255,9 +256,21 @@ public class App {
                         //Display all passengers
                         passengerStore.displayAllPassengers();
                         System.out.println("\nEnter passenger ID to delete: ");
-                        int passIDdel = Integer.parseInt(keyboard.nextLine());
-                        //Delete passenger by ID - passing ID
-                       passengerStore.deletePassenger(passIDdel);
+                        boolean isID = false;
+                        while (isID != true) {
+                            try {
+                                int passIDdel = keyboard.nextInt();
+                                isID = true;
+                                //Delete passenger by ID - passing ID
+                                passengerStore.deletePassenger(passIDdel);
+
+                               // break;
+                            } catch (InputMismatchException e) {
+                                 keyboard.nextLine();
+                                System.out.println("Please enter a number for ID!!!");
+                            }
+                        }
+
                         break;
                     case EXIT:
 
@@ -285,9 +298,10 @@ public class App {
                         + "*   3. Find Vehicles by Type                 *\n"
                         + "*   4. Find Vehicles by Number of Seats      *\n"
                         + "*   5. Add new VehicleFile                   *\n"
-                        + "*   6. Exit                                  *\n"
+                        + "*   6. Delete Vehicle                        *\n"
+                        + "*   7. Exit                                  *\n"
                         + "*--------------------------------------------*\n"
-                        + "*             Enter Option [1,6]             *\n"
+                        + "*             Enter Option [1,7]             *\n"
                         + "*--------------------------------------------*";
 
         final int SHOW_ALL = 1;
@@ -295,7 +309,8 @@ public class App {
         final int FIND_BY_TYPE = 3;
         final int FIND_BY_NUMSEATS = 4;
         final int ADD_NEW_VEHICLE = 5;
-        final int EXIT = 6;
+        final int DELETE_VEHICLE = 6;
+        final int EXIT = 7;
 
         Scanner keyboard = new Scanner(System.in);
         int option = 0;
@@ -317,10 +332,10 @@ public class App {
                         System.out.println("*    Find Vehicle by Registration number     *");
                         System.out.println("*--------------------------------------------*");
                         System.out.println("Please enter Registration number of the vehicle: ");
-                        String name = keyboard.nextLine();
-                        Vehicle v = vehicleManager.findvehicleByRegNumber(name);
+                        String regNumber = keyboard.nextLine();
+                        Vehicle v = vehicleManager.findvehicleByRegNumber(regNumber);
                         if (v == null)
-                            System.out.println("No Vehicle matching the make \"" + name + "\"");
+                            System.out.println("No Vehicle matching the registration number \"" + regNumber + "\"");
                         else
                             System.out.println("Found Vehicle: \n" + v.toString());
                         break;
@@ -333,7 +348,7 @@ public class App {
 
                         ArrayList<Vehicle> listType = vehicleManager.findvehicleByType(type);
                         if (listType.isEmpty())
-                            System.out.println("No Vehicle matching the make \"" + type + "\"");
+                            System.out.println("No Vehicle matching the type \"" + type + "\"");
                         else
                             for (Vehicle vtype : listType) {
                                 System.out.println(vtype);
@@ -343,16 +358,25 @@ public class App {
                         System.out.println("*----------------------------------------*");
                         System.out.println("*    Find Vehicle by Number of Seats     *");
                         System.out.println("*----------------------------------------*");
-                        System.out.println("Please enter type of the vehicle: ");
-                        int numOfSeats = Integer.parseInt(keyboard.nextLine());
-
-                        ArrayList<Vehicle> listNumSeat = vehicleManager.findvehicleByNumSeat(numOfSeats);
-                        if (listNumSeat.isEmpty())
-                            System.out.println("No Vehicle with \"" + numOfSeats + "\" number of seats!!");
-                        else
-                            for (Vehicle vNumSeat : listNumSeat) {
-                                System.out.println(vNumSeat);
+                        System.out.println("Please enter Number of Seats: ");
+                       // int numOfSeats = Integer.parseInt(keyboard.nextLine());
+                        boolean isNumSeat = false;
+                        while (isNumSeat != true) {
+                            try {
+                                int numOfSeats = keyboard.nextInt();
+                                isNumSeat = true;
+                                ArrayList<Vehicle> listNumSeat = vehicleManager.findvehicleByNumSeat(numOfSeats);
+                                if (listNumSeat.isEmpty())
+                                    System.out.println("No Vehicle with \"" + numOfSeats + "\"  seats!!");
+                                else
+                                    for (Vehicle vNumSeat : listNumSeat) {
+                                        System.out.println(vNumSeat);
+                                    }
+                            } catch (InputMismatchException e) {
+                                keyboard.nextLine();
+                                System.out.println("Enter number for Number of seats!!!");
                             }
+                        }
                         break;
                     case ADD_NEW_VEHICLE:
                         System.out.println("*-----------------------------*");
@@ -365,7 +389,7 @@ public class App {
                         String enterMake = keyboard.nextLine();
                         System.out.println("\nEnter vehicle model: ");
                         String enterModel = keyboard.nextLine();
-                       // try {
+                    //    try {
                             System.out.println("\nEnter vehicle milesPerKwH: ");
                             int milesPerKwH = Integer.parseInt(keyboard.nextLine());
                             System.out.println("\nEnter vehicle registration number: ");
@@ -416,14 +440,38 @@ public class App {
 //                                        mileage, latitude, longitude, numSeats);
                             }
 
+
+                       // } catch (IOException e) {
+                           // keyboard.nextLine();
+                          //  System.out.println(INPUT_MIS_MATCH);
+
+                      //  }
                         break;
-//                        } catch (Exception e) {
-//                           // keyboard.nextLine();
-//                            System.out.println(INPUT_MIS_MATCH);
-//
-//                        }
+                    case DELETE_VEHICLE:
+                        System.out.println("*-----------------------------*");
+                        System.out.println("*    Delete Vehicle  by ID     *");
+                        System.out.println("*-----------------------------*");
 
+                        //Display all passengers
+                        vehicleManager.displayAllVehicles();
+                        System.out.println("\nEnter passenger ID to delete: ");
+                        boolean isID = false;
+                        while (isID != true) {
+                            try {
 
+                                int passIDdel = keyboard.nextInt();
+                                isID = true;
+                                //Delete passenger by ID - passing ID
+                                vehicleManager.deleteVehicle(passIDdel);
+
+                                // break;
+                            } catch (InputMismatchException e) {
+                                keyboard.nextLine();
+                                System.out.println("Please enter a number for ID!!!");
+                            }
+                        }
+
+                        break;
                     case EXIT:
 
                         System.out.println("Exit Menu option chosen");
@@ -445,21 +493,25 @@ public class App {
                         + "*           *** BOOKING MENU ***           *\n"
                         + "*------------------------------------------*\n"
                         + "*   1. Show all Booking                    *\n"
-                        + "*   2. Find Booking by ID                  *\n"
-                        + "*   3. Add new booking                     *\n"
-                        + "*   4. Edit booking by ID                  *\n"
-                        + "*   5. Delete booking by ID                *\n"
-                        + "*   6. Exit                                *\n"
+                        + "*   2. Show all current Bookings           *\n"
+                        + "*   3. Find Booking by ID                  *\n"
+                        + "*   4. Find Booking by Passenger Name      *\n"
+                        + "*   5. Add new booking                     *\n"
+                        + "*   6. Edit booking by ID                  *\n"
+                        + "*   7. Delete booking by ID                *\n"
+                        + "*   8. Exit                                *\n"
                         + "*------------------------------------------*\n"
-                        + "*             Enter Option [1,6]           *\n"
+                        + "*             Enter Option [1,8]           *\n"
                         + "*------------------------------------------*";
 
         final int SHOW_ALL = 1;
-        final int FIND_BY_ID = 2;
-        final int ADD_NEW_BOOKING = 3;
-        final int EDIT_BOOKING = 4;
-        final int DELETE_BOOKING = 5;
-        final int EXIT = 6;
+        final int SHOW_ALL_CURRENT = 2;
+        final int FIND_BY_ID = 3;
+        final int FIND_BY_PASSNAME = 4;
+        final int ADD_NEW_BOOKING = 5;
+        final int EDIT_BOOKING = 6;
+        final int DELETE_BOOKING = 7;
+        final int EXIT = 8;
 
         Scanner keyboard = new Scanner(System.in);
         int option = 0;
@@ -476,18 +528,62 @@ public class App {
                         bookingManager.displayAllBookings();
 
                         break;
+                    case SHOW_ALL_CURRENT:
+                        System.out.println("*-------------------------------------*");
+                        System.out.println("*    Display ALL Current Bookings     *");
+                        System.out.println("*-------------------------------------*");
+                        bookingManager.displayCurrentBookings();
+
+                        break;
 
                     case FIND_BY_ID:
                         System.out.println("*------------------------------*");
                         System.out.println("*    Find Booking by ID        *");
                         System.out.println("*------------------------------*");
                         System.out.println("Please enter booking ID : ");
-                        int id = Integer.parseInt(keyboard.nextLine()) ;
-                        Booking b = bookingManager.findBooking(id);
-                        if (b == null)
-                            System.out.println("No Booking matching the ID \"" + id + "\"");
-                        else
-                            System.out.println("Found Booking: \n" + b.toString());
+
+                        // int id = keyboard.nextInt() ;
+                        boolean isID = false;
+                        while (isID != true) {
+                            try {
+
+                                int passID = keyboard.nextInt();
+                                isID = true;
+                                Booking b = bookingManager.findBooking(passID);
+                                System.out.println(b);
+
+                                // break;
+                            } catch (InputMismatchException e) {
+                                keyboard.nextLine();
+                                System.out.println("Please enter a number for ID!!!");
+                            }
+                        }
+
+                        break;
+
+                    case FIND_BY_PASSNAME:
+                        System.out.println("*---------------------------------------*");
+                        System.out.println("*    Find Booking by Passenger Name     *");
+                        System.out.println("*---------------------------------------*");
+                        System.out.println("Please enter passenger Name : ");
+
+                        // int id = keyboard.nextInt() ;
+                        boolean isName = false;
+                        while (isName != true) {
+                            try {
+
+                                String passName = keyboard.nextLine();
+                                isName = true;
+                                Booking b = bookingManager.findBookingByName(passName);
+                                System.out.println(b);
+
+                                // break;
+                            } catch (InputMismatchException e) {
+                                keyboard.nextLine();
+                                System.out.println("Please enter a number for ID!!!");
+                            }
+                        }
+
                         break;
 
                     case ADD_NEW_BOOKING:
@@ -499,9 +595,9 @@ public class App {
                         passengerStore.displayAllPassengers();
                         vehicleManager.displayAllVehicles();
 
-                        System.out.println("Please enter passenger ID: ");
+                        System.out.println("Please choose passenger ID: ");
                         int passengerId = Integer.parseInt(keyboard.nextLine()) ;
-                        System.out.println("Please enter vehicle ID: ");
+                        System.out.println("Please choose vehicle ID: ");
                         int vehicleId = Integer.parseInt(keyboard.nextLine()) ;
                         System.out.println("Please enter year of the booking: ");
                         int yearOfbooking = Integer.parseInt(keyboard.nextLine()) ;
@@ -514,35 +610,44 @@ public class App {
                         System.out.println("Please enter minute of the booking: ");
                         int minuteOfbooking = Integer.parseInt(keyboard.nextLine()) ;
 
-                        //2021,2,1
                         LocalDateTime dateBooking = LocalDateTime.of(yearOfbooking, monthOfbooking, dayOfbooking,
                                 hourOfbooking, minuteOfbooking);
                         System.out.println("Please enter start latitude of the booking: ");
                         double startLatitude = Double.parseDouble(keyboard.nextLine());
-                        System.out.println("Please enter start longtitude of the booking: ");
+                        System.out.println("Please enter start longttude of the booking: ");
                         double startLongtitude = Double.parseDouble(keyboard.nextLine());
 
                         LocationGPS startLocation = new LocationGPS(startLatitude,startLongtitude);
                         System.out.println("Please enter end latitude of the booking: ");
                         double endLatitude = Double.parseDouble(keyboard.nextLine());
-                        System.out.println("Please enter end longtitude of the booking: ");
+                        System.out.println("Please enter end longitude of the booking: ");
                         double endLongtitude = Double.parseDouble(keyboard.nextLine());
 
                         LocationGPS endLocation = new LocationGPS(endLatitude,endLongtitude);
-                        System.out.println("Please enter end cost of the booking: ");
-                        double cost = bookingManager.costBooking(startLatitude,startLongtitude,endLatitude,endLongtitude);
-                       // double bookDistance =bookingManager.costBooking(startLatitude,startLongtitude,endLatitude,endLongtitude);
 
 
-                     //   double cost = bookingManager.costBooking(startLatitude,startLongtitude,endLatitude,endLongtitude);
-                        //Booking book1 = new Booking(101,115,dateBooking,startLocation,endLocation,314.34);
+                        LocationGPS vehDepotLocation = vehicleManager.getLocation(vehicleId);
+                        double costPerMile = vehicleManager.getCostPerMIle(vehicleId);
 
-                        bookingManager.createBooking(passengerId,vehicleId,dateBooking,
+
+                        double cost = bookingManager.costBooking(startLatitude,startLongtitude,endLatitude,endLongtitude,
+                                vehDepotLocation,costPerMile);
+
+
+                        Booking b1 = new Booking(passengerId,vehicleId,dateBooking,
                                 startLocation,endLocation,cost);
 
-                       // bookingManager.addBooking();
+                        if (passengerStore.findPassengerByID(passengerId) != null) {
 
+                            if (vehicleManager.findVehicleByID(vehicleId) != null) {
+                                bookingManager.addNewBooking(b1);
+                            }else {
+
+                                System.out.println("There is no such passenger in the file");
+                            }
+                        }
                         break;
+
 
                     case EDIT_BOOKING:
                         System.out.println("*------------------------------*");
@@ -567,10 +672,22 @@ public class App {
 
                         //display All booking list
                         bookingManager.displayAllBookings();
+                        System.out.println("\nPlease enter booking ID : ");
+                        boolean isIDdel = false;
+                        while (isIDdel != true) {
+                            try {
+                                int bokngIDdel = keyboard.nextInt();
 
-                        int bokngIDdel = Integer.parseInt(keyboard.nextLine());
-                        bookingManager.deleteBooking(bokngIDdel);
-
+                                //Delete booking by ID - passing ID
+                                bookingManager.deleteBooking(bokngIDdel);
+                                keyboard.nextLine();
+                                isIDdel = true;
+                                // break;
+                            } catch (InputMismatchException e) {
+                                keyboard.nextLine();
+                                System.out.println("Please enter a number for ID!!!");
+                            }
+                        }
 
                         break;
                     case EXIT:
@@ -581,7 +698,7 @@ public class App {
                         break;
                 }
 
-            } catch (InputMismatchException | NumberFormatException e) {
+            } catch (InputMismatchException | NumberFormatException | IOException e) {
                 System.out.print("Invalid option - please enter number in range");
             }
         } while (option != EXIT);

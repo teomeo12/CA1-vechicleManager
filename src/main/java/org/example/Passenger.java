@@ -31,8 +31,6 @@ public class Passenger {
         this.location = new LocationGPS(latitude, longitude);
     }
 
-
-
     // Version of constructor called when the passenger id is known,
     // as it was read from the "passengers.txt" file.
     //

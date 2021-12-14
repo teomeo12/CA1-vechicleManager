@@ -16,7 +16,7 @@ public class VehicleManager {
         this.vehicleList = new ArrayList<>();
         loadVehiclesFromFile(fileName);
     }
-
+    //Reading file method
     public void loadVehiclesFromFile(String fileName) {
         try {
             Scanner sc = new Scanner(new File(fileName));
@@ -41,7 +41,7 @@ public class VehicleManager {
 
                 if (type.equalsIgnoreCase("Van") ||
                         type.equalsIgnoreCase("Truck") ) {
-                    int loadSpace = sc.nextInt();
+                    double loadSpace = sc.nextDouble();
                     // construct a Van object and add it to the passenger list
                     vehicleList.add(new Van(id, type, make, model, milesPerKwH,
                             registration, costPerMile,
@@ -64,100 +64,8 @@ public class VehicleManager {
             System.out.println("Exception thrown. " + e);
         }
     }
-
     //TODO add more functionality as per spec.
-    //Display all vehicles method
-    public void displayAllVehicles() {
-        if (!vehicleList.isEmpty()) {
-            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------");
-            System.out.printf("%-5s %-6s %-10s %-15s %-15s %-15s %-10s %-13s %-10s %-10s %-15s \n","ID" ," Type"," Make"," Model" ,"Miles/KwH","Registration","Cost/mile","Last service","Milage","Latitude","Longtitude");
-            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------");
-            for (Vehicle v : this.vehicleList) {
-                System.out.printf("%-5d %-6s %-10s %-15s %-15s %-15s %-10s %-13s %-10s %-10s %-15.4f  \n",v.getId() , v.getType(), v.getMake(),v.getModel(),v.getMilesPerKm(),v.getRegistration(),v.getCostPerMile(),
-                        v.getLastServicedDate(),v.getMileage(),v.getDepotGPSLocation().getLatitude(),v.getDepotGPSLocation().getLongitude());
-                // System.out.println(p.toString());
-            }
-        } else {
-            System.out.println("\n ~~##   There is no passengers in the list!   ##~~");
-        }
-    }
-
-    //FIND Vehicle by ID
-    public Vehicle findVehicleByID(int id) {
-
-        for (Vehicle v : vehicleList) {
-            if (v.getId() == id) {
-                return v;
-            }
-        }
-        return null;
-    }
-    //Find all vehicles by registration number method
-    public Vehicle findvehicleByRegNumber(String reg) {
-
-        for (Vehicle v : vehicleList) {
-            if (v.getRegistration().equalsIgnoreCase(reg)) {
-                return v;
-            }
-        }
-        return null;
-    }
-    //Find all vehicles by Type of vehicle e.g. VAN,4x4  method
-    public ArrayList findvehicleByType(String type) {
-       ArrayList<Vehicle> newList = new ArrayList<>();
-        for (Vehicle v : vehicleList) {
-            if (v.getType().equalsIgnoreCase(type)) {
-                   newList.add(v);
-
-            }
-        }
-        return newList;
-    }
-    //Find vehicle by number of seats
-    public ArrayList findvehicleByNumSeat(int numSeats) {
-
-        ArrayList<Vehicle> newList1 = new ArrayList<>();
-        for (Vehicle v : vehicleList) {
-            if (v instanceof Car) {
-                if(((Car) v).getNumSeats() ==numSeats)
-                newList1.add(v);
-
-            }
-        }
-        return newList1;
-    }
-
-    //Add the vehicles to the file "vehicle.txt"
-    public void addToFIle() throws IOException{
-      //  FileWriter writer1 = new FileWriter("C:\\Users\\teodo\\Desktop\\aYEAR2\\OOP\\Projects\\CA1-vechicleManager\\passengers.txt",true);
-        FileWriter writer = new FileWriter("C:\\Users\\teodo\\Desktop\\aYEAR2\\OOP\\Projects\\CA1-vechicleManager\\vehicles.txt");
-        for (Vehicle v : vehicleList) {
-
-            if (v instanceof Car) {
-               String data = v.getId()+","+v.getType() +","+ v.getMake() +","+ v.getModel() +","+ v.getMilesPerKm()+","+
-                v.getRegistration() +"," + v.getCostPerMile() +","+ v.getLastServicedDate() +","+ v.getMileage() +","+
-                       v.getDepotGPSLocation().getLatitude() +","+ v.getDepotGPSLocation().getLongitude() +","+ ((Car) v).getNumSeats();
-
-                writer.append(data +"\n");
-
-
-
-            }else{
-                String data = v.getId()+","+v.getType() +","+ v.getMake() +","+ v.getModel() +","+ v.getMilesPerKm()+","+
-                        v.getRegistration() +"," + v.getCostPerMile() +","+ v.getLastServicedDate() +","+ v.getMileage() +","+
-                        v.getDepotGPSLocation().getLatitude() +","+ v.getDepotGPSLocation().getLongitude() +","+ ((Van) v).getLoadSpace();
-
-                writer.append(data +"\n");
-
-            }
-
-        }
-        writer.close();
-        System.out.println("The data in the vehicle file is updated and saved!!!");
-
-    }
-
-        //Passing and Add new vehicle to the Vehicle constructor
+    //Passing and Add new vehicle to the Vehicle constructor
     public Vehicle addNewVehicle(Vehicle e) throws IOException {
 
         if(e instanceof Car ){
@@ -174,10 +82,126 @@ public class VehicleManager {
         return null;
     }
 
-    public Vehicle deleteVehicle(Vehicle e){
-        vehicleList.remove(e);
+    //Add the vehicles to the file "vehicle.txt"
+    public void addToFIle() throws IOException{
+
+        FileWriter writer = new FileWriter("C:\\Users\\teodo\\Desktop\\aYEAR2\\OOP\\Projects\\CA1-vechicleManager\\vehicles.txt");
+        for (Vehicle v : vehicleList) {
+
+            if (v instanceof Car) {
+               String data = v.getId()+","+v.getType() +","+ v.getMake() +","+ v.getModel() +","+ v.getMilesPerKm() +","+
+                v.getRegistration() +"," + v.getCostPerMile() +","+ v.getLastServicedDate().getYear()+","+v.getLastServicedDate().getMonthValue()+","+v.getLastServicedDate().getDayOfMonth() +","+ v.getMileage() +","+
+                       v.getDepotGPSLocation().getLatitude() +","+ v.getDepotGPSLocation().getLongitude() +","+ ((Car) v).getNumSeats();
+
+                writer.append(data +"\n");
+
+            }if (v instanceof Van){
+                String data = v.getId()+","+v.getType() +","+ v.getMake() +","+ v.getModel() +","+ v.getMilesPerKm() +","+
+                        v.getRegistration() +"," + v.getCostPerMile() +","+ v.getLastServicedDate().getYear()+","+v.getLastServicedDate().getMonthValue()+","+v.getLastServicedDate().getDayOfMonth() +","+ v.getMileage() +","+
+                        v.getDepotGPSLocation().getLatitude() +","+ v.getDepotGPSLocation().getLongitude() +","+ ((Van) v).getLoadSpace();
+
+                writer.append(data +"\n");
+            }
+
+        }
+        writer.close();
+        System.out.println("The data in the vehicle file is updated and saved!!!");
+    }
+    //Delete vehicle
+    public void deleteVehicle(int id) {
+        for (Vehicle v : vehicleList) {
+
+            if(v.getId() == id) {
+
+                vehicleList.remove(v);
+                System.out.println("The vehicle with id " + id + " is deleted.");
+                break;
+            }
+        }
+    }
+    //Display all vehicles method
+    public void displayAllVehicles() {
+        if (!vehicleList.isEmpty()) {
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.printf("%-5s %-6s %-10s %-15s %-15s %-15s %-10s %-13s %-10s %-10s %-15s \n","ID" ," Type"," Make"," Model" ,"Miles/KwH","Registration","Cost/mile","Last service","Milage","Latitude","Longtitude");
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            for (Vehicle v : this.vehicleList) {
+                System.out.printf("%-5d %-6s %-10s %-15s %-15s %-15s %-10s %-13s %-10s %-10s %-15.4f  \n",v.getId() , v.getType(), v.getMake(),v.getModel(),v.getMilesPerKm(),v.getRegistration(),v.getCostPerMile(),
+                        v.getLastServicedDate(),v.getMileage(),v.getDepotGPSLocation().getLatitude(),v.getDepotGPSLocation().getLongitude());
+
+            }
+        } else {
+            System.out.println("\n ~~##   There is no passengers in the list!   ##~~");
+        }
+    }
+    //Get Vehicle location
+    public LocationGPS getLocation(int id){
+        for (Vehicle v : vehicleList) {
+            if(v.getId() == id){
+                return  v.getDepotGPSLocation();
+            }
+
+        }
         return null;
     }
+    //Get Vehicle Cost per mile
+    public double getCostPerMIle(int id){
+        for (Vehicle v : vehicleList) {
+            if(v.getId() == id){
+                return  v.getCostPerMile();
+            }
+        }
+        return 0;
+    }
+
+    //FIND Vehicle by ID
+    public Vehicle findVehicleByID(int id) {
+
+        for (Vehicle v : vehicleList) {
+            if (v.getId() == id) {
+                return v;
+            }
+        }
+        System.out.println("\n~~##  There is no Vehicle with ID " + id + " in the list!   ##~~");
+
+        return null;
+    }
+    //Find all vehicles by registration number method
+    public Vehicle findvehicleByRegNumber(String reg) {
+
+        for (Vehicle v : vehicleList) {
+            if (v.getRegistration().equalsIgnoreCase(reg)) {
+                return v;
+            }
+        }
+        System.out.println("\n~~##  There is no Vehicle with Registration Number:  " + reg + " in the list!   ##~~");
+
+        return null;
+    }
+    //Find all vehicles by Type of vehicle e.g. VAN,4x4  method
+    public ArrayList findvehicleByType(String type) {
+        ArrayList<Vehicle> newList = new ArrayList<>();
+        for (Vehicle v : vehicleList) {
+            if (v.getType().equalsIgnoreCase(type)) {
+                newList.add(v);
+            }
+        }
+        return newList;
+    }
+    //Find vehicle by number of seats
+    public ArrayList findvehicleByNumSeat(int numSeats) {
+
+        ArrayList<Vehicle> newList1 = new ArrayList<>();
+        for (Vehicle v : vehicleList) {
+            if (v instanceof Car) {
+                if(((Car) v).getNumSeats() ==numSeats)
+                    newList1.add(v);
+
+            }
+        }
+        return newList1;
+    }
+
 
     @Override
     public String toString() {
