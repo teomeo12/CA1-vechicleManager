@@ -136,6 +136,14 @@ public class PassengerStore {
             }
         }
     }
+    public int getPassName(String name){
+        for (Passenger p : passengerList) {
+            if(p.getName().equalsIgnoreCase(name)){
+                return p.getId();
+            }
+        }
+        return 0;
+    }
 
     //FIND Passenger by name
     public Passenger findPassengerByName(String name) {

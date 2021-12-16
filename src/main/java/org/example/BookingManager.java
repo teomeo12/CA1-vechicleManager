@@ -203,11 +203,11 @@ public class BookingManager {
     }
     //Find booking by Passenger Name
     public Booking findBookingByName(String name) {
-       Passenger passName = passengerStore.findPassengerByName(name);
+       int passNameID = passengerStore.getPassName(name);
+
         for (Booking b : bookingList) {
-
+            if(b.getPassengerId() ==  passNameID)
                 return b;
-
 
         }
         System.out.println("\n~~##  There is no booking with ID " + 1 + " in the list!   ##~~");
@@ -271,35 +271,7 @@ public class BookingManager {
 
 }
 
-//        String output ="";
-//        for (Booking b : bookingList){
-//
-//            output = b.getBookingId() + b.getPassengerId() + b.getVehicleId() + b.getBookingDateTime().getYear() + b.getBookingDateTime().getDayOfMonth() + String.valueOf(b.getBookingDateTime().getDayOfWeek())+
-//                    b.getStartLocation().getLatitude() + b.getStartLocation().getLongitude() + b.getEndLocation().getLatitude() + b.getEndLocation().getLongitude();
-//
-//        }
-//
-//        return output;
-// System.out.printf("%-5s %-15s %-25s %-15s %-15s %-15s\n","ID" ," Name"," Email"," Phone" ,"Latitude","Longtitude");
 
-//    public Booking createBooking(int passengerId, int vehicleId, LocalDateTime bookingDateTime,
-//                           LocationGPS startLocation, LocationGPS endLocation, double cost) {
-//        if (passengerStore.findPassengerByID(passengerId) != null) {
-//            if (vehicleManager.findVehicleByID(vehicleId) != null) {
-//
-//
-//                Booking booking = new Booking(passengerId, vehicleId, bookingDateTime, startLocation, endLocation, cost);
-//                bookingList.add(booking);
-//
-//            }
-//            System.out.println("The booking is added!");
-//
-//
-//        } else {
-//            System.out.println("There is no such passenger in the file");
-//        }
-//          return null;
-//    }
 
 
 

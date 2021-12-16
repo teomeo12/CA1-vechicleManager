@@ -549,7 +549,7 @@ public class App {
                                 Booking b = bookingManager.findBooking(passID);
                                 System.out.println(b);
 
-                                // break;
+                                keyboard.nextLine();
                             } catch (InputMismatchException e) {
                                 keyboard.nextLine();
                                 System.out.println("Please enter a number for ID!!!");
